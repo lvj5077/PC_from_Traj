@@ -1,0 +1,14 @@
+image_Path=/home/jin/Data_Capture/myImage/OBS_labdesk/
+trajectory_Path=/home/jin/Data_Capture/myImage/OBS_labdesk/CameraTrajectory.txt
+timestamp_Path=/home/jin/Data_Capture/myImage/OBS_labdesk/timestamp.txt
+
+output_Path=/home/jin/Desktop/OBS_labdesk.pcd
+
+camera.cx=325.63311767578125
+camera.cy=233.10826110839844
+camera.fx=385.4438171386719
+camera.fy=385.4438171386719
+camera.scale=1000.0
+
+space=5
+voxel_grid=0.02
