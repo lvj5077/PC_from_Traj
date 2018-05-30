@@ -1,10 +1,11 @@
 include_directories(/usr/include/eigen3)
 
+SET("PCL_DIR" "/home/jin/Third_Party_Packages/pcl-pcl-1.8.1/build")
 FIND_PACKAGE( PCL REQUIRED COMPONENTS common io visualization filters )
-list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4") # use this in Ubuntu 16.04
+# list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4") # use this in Ubuntu 16.04
 
 # 增加opencv的依赖
-SET("OpenCV_DIR" "/home/jin/Third_Party_Packages/opencv-2.4.13/build")
+SET("OpenCV_DIR" "/home/jin/Third_Party_Packages/opencv-3.4.1/build")
 find_package(OpenCV REQUIRED)
 
 # 添加头文件和库文件
@@ -29,6 +30,12 @@ TARGET_LINK_LIBRARIES( PC_from_Traj
 
 ADD_EXECUTABLE( PC_from_Traj_name pcFromTraj_name.cpp) # not work yet
 TARGET_LINK_LIBRARIES( PC_from_Traj_name
+    slambase
+    ${OpenCV_LIBS} 
+    ${PCL_LIBRARIES} )
+
+ADD_EXECUTABLE( MypcFromTraj MypcFromTraj.cpp) # not work yet
+TARGET_LINK_LIBRARIES( MypcFromTraj
     slambase
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES} )

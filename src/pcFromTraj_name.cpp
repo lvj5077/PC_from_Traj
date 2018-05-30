@@ -80,33 +80,32 @@ int main(int argc, char** argv)
           string sRGB;
           ss >> sRGB>>buffer>>buffer>>buffer>>buffer>>buffer>>buffer>>buffer;
           string name;
-          name = image_Path+"color/"+sRGB+".png";
+          name = "color/"+sRGB+".png";
           vstrImageFilenamesRGB.push_back(name);
-          name = image_Path+"depth/"+sRGB+".png";
+          name = "depth/"+sRGB+".png";
           vstrImageFilenamesD.push_back(name);
         }
     }
 
     FRAME frame1, frame2;
-    frame1.rgb = cv::imread( vstrImageFilenamesRGB[0] );
-    frame1.depth = cv::imread( vstrImageFilenamesD[0], -1);
+    frame1.rgb = cv::imread( vstrImageFilenamesRGB[1] );
+    frame1.depth = cv::imread( vstrImageFilenamesD[1], -1);
 
-    cout << "vstrImageFilenamesRGB[0] " << vstrImageFilenamesRGB[0] <<endl;
+    cout << "vstrImageFilenamesRGB[1]" << vstrImageFilenamesRGB[1] <<endl;
     PointCloud::Ptr cloud1 = image2PointCloud( frame1.rgb, frame1.depth, camera );
     
-	pcl::io::savePCDFile(output_Path.c_str(), *cloud1);
 
     ifstream input( trajectory_Path.c_str() );
     
     PointCloud::Ptr output (new PointCloud());
     output = cloud1;
 
-    int count = -1;
+    int count = 1;
     int res = 1;
 
 
     pcl::visualization::CloudViewer viewer( "viewer" );
-    while(!input.eof())
+    while(!input.eof() && count<900)
     {
         res++;
         count ++;
@@ -143,17 +142,17 @@ int main(int argc, char** argv)
         //Tm = Tlast.colPivHouseholderQr().solve(Tnow);
 
         Tm = Tfirst.colPivHouseholderQr().solve(Tnow);
-        cout << Tm.matrix() <<endl;
+        cout << Tm.matrix() <<endl<<endl;
 
 
 
-        // string ssRGB = image_Path+vstrImageFilenamesRGB[count];
-        cout << vstrImageFilenamesRGB[count] <<endl<<endl;
-        frame2.rgb = cv::imread( vstrImageFilenamesRGB[count] );
+        string ssRGB = image_Path+vstrImageFilenamesRGB[count];
+        cout << ssRGB <<endl;
+        frame2.rgb = cv::imread( ssRGB );
         
-        // string ssDepth = image_Path+vstrImageFilenamesD[count];
-        // cout << ssDepth <<endl;
-        frame2.depth = cv::imread( vstrImageFilenamesD[count],-1);
+        string ssDepth = image_Path+vstrImageFilenamesD[count];
+        cout << ssDepth <<endl;
+        frame2.depth = cv::imread( ssDepth,-1);
 
         PointCloud::Ptr cloud2 = image2PointCloud( frame2.rgb, frame2.depth, camera );
 
@@ -169,8 +168,6 @@ int main(int argc, char** argv)
 
         }
         viewer.showCloud( output );
-
-        
     }
 
     

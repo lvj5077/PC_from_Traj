@@ -90,8 +90,8 @@ int main(int argc, char** argv)
     }
 
     FRAME frame1, frame2;
-    frame1.rgb = cv::imread( vstrImageFilenamesRGB[0] );
-    frame1.depth = cv::imread( vstrImageFilenamesD[0], -1);
+    frame1.rgb = cv::imread( image_Path+vstrImageFilenamesRGB[1] );
+    frame1.depth = cv::imread( image_Path+vstrImageFilenamesD[1], -1);
 
     PointCloud::Ptr cloud1 = image2PointCloud( frame1.rgb, frame1.depth, camera );
     
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
     PointCloud::Ptr output (new PointCloud());
     output = cloud1;
 
-    int count = 0;
+    int count = 1;
     int res = 1;
 
 
