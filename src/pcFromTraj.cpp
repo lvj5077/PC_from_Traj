@@ -4,7 +4,7 @@
 #include <opencv2/core/eigen.hpp>
 
 #include <pcl/common/transforms.h>
-#include <pcl/visualization/cloud_viewer.h>
+// #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 {
     cout<<endl<<"Program Started!"<<endl;
     cout <<"~~~~~~~~~~~~~~~~~~"<<endl<<endl;
-    string ParameterPath = "/home/jin/Lingqiu_Jin/PC_from_Traj/parameters.txt";
+    string ParameterPath = "/Users/lingqiujin/work/PC_from_Traj/parameters.txt";
     if(argc >=2){
     	ParameterPath = argv[1];
     }
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
     int res = 1;
 
 
-    pcl::visualization::CloudViewer viewer( "viewer" );
+    // pcl::visualization::CloudViewer viewer( "viewer" );
     while(!input.eof() )
     {
         res++;
@@ -168,16 +168,17 @@ int main(int argc, char** argv)
         cloud2->points.clear();
 
         }
-        viewer.showCloud( output );
+        // viewer.showCloud( output );
     }
 
     
     
     pcl::io::savePCDFile(output_Path.c_str(), *output);
     
-    while( !viewer.wasStopped() )
-    {
+    
+    // while( !viewer.wasStopped() )
+    // {
         
-    }
+    // }
     return 0;
 }
