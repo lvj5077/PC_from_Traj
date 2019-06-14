@@ -1,19 +1,17 @@
-include_directories(/usr/include/eigen3)
+INCLUDE_DIRECTORIES ("/usr/local/include/eigen3/") #/usr/local/Cellar/eigen/3.3.7
 
-SET("PCL_DIR" "/home/jin/Third_Party_Packages/pcl-pcl-1.8.1/build")
-FIND_PACKAGE( PCL REQUIRED COMPONENTS common io visualization filters )
-# list(REMOVE_ITEM PCL_LIBRARIES "vtkproj4") # use this in Ubuntu 16.04
-
-# 增加opencv的依赖
-SET("OpenCV_DIR" "/home/jin/Third_Party_Packages/opencv-3.4.1/build")
-find_package(OpenCV REQUIRED)
-
-# 添加头文件和库文件
+SET(PCL_DIR "/usr/local/Cellar/pcl/1.9.1_4/share/pcl-1.9")
+FIND_PACKAGE( PCL 1.9 REQUIRED COMPONENTS common io visualization filters )
 ADD_DEFINITIONS( ${PCL_DEFINITIONS} )
 INCLUDE_DIRECTORIES( ${PCL_INCLUDE_DIRS}  )
 LINK_LIBRARIES( ${PCL_LIBRARY_DIRS} )
+link_directories( /usr/local/Cellar/flann/1.9.1_7/lib )
 
-# INCLUDE_DIRECTORIES( ${PROJECT_SOURSE_DIR}/include )
+SET(OpenCV_DIR "/usr/local/Cellar/opencv@3/3.4.5_2/share/OpenCV")
+find_package( OpenCV 3.4 REQUIRED )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+link_directories(${OpenCV_LIB_DIR})
+
 
 
 ADD_LIBRARY( slambase slamBase.cpp )
@@ -24,18 +22,6 @@ TARGET_LINK_LIBRARIES( slambase
 
 ADD_EXECUTABLE( PC_from_Traj pcFromTraj.cpp)
 TARGET_LINK_LIBRARIES( PC_from_Traj
-    slambase
-    ${OpenCV_LIBS} 
-    ${PCL_LIBRARIES} )
-
-ADD_EXECUTABLE( PC_from_Traj_name pcFromTraj_name.cpp) # not work yet
-TARGET_LINK_LIBRARIES( PC_from_Traj_name
-    slambase
-    ${OpenCV_LIBS} 
-    ${PCL_LIBRARIES} )
-
-ADD_EXECUTABLE( MypcFromTraj MypcFromTraj.cpp) # not work yet
-TARGET_LINK_LIBRARIES( MypcFromTraj
     slambase
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES} )
