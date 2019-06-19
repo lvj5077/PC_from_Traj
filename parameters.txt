@@ -10,5 +10,5 @@ camera.fx=531.577087
 camera.fy=531.577148
 camera.scale=1000.0
 
-space=3
+space=30
 voxel_grid=0.05
