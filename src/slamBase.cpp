@@ -72,6 +72,23 @@ pcl::PointCloud<pcl::PointXYZ> cvPtsToPCL(vector<Point3f> &p_XYZs)
     return cloud;
 }
 
+
+Eigen::Isometry3d cvTtoEigenT( Mat cv44T){
+    Eigen::Isometry3d T_eigen = Eigen::Isometry3d::Identity();
+
+    Eigen::Matrix3d r3v;
+
+    Mat mat_r = cv44T(cv::Rect(0,0,3,3));
+    cv::cv2eigen(mat_r, r3v);
+    Eigen::AngleAxisd angle(r3v);
+    T_eigen = angle;
+    T_eigen(0,3) = cv44T.at<double>(0,3); 
+    T_eigen(1,3) = cv44T.at<double>(1,3); 
+    T_eigen(2,3) = cv44T.at<double>(2,3);
+
+    return T_eigen;
+}
+
 // vector<Point3f> imagToCVpt( Mat depth, CAMERA_INTRINSIC_PARAMETERS& camera ){
 //     vector<Point3f> pts_cv;
 

@@ -54,63 +54,81 @@ void toc() {
 
 void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
     matches.clear();
-    // if (type == "bf") {
-    //     BFMatcher desc_matcher(cv::NORM_L2, true);
-    //     desc_matcher.match(desc1, desc2, matches, Mat());
-    // }
-    // if (type == "knn") {
-    //     BFMatcher desc_matcher(cv::NORM_L2, true);
-    //     vector< vector<DMatch> > vmatches;
-    //     desc_matcher.knnMatch(desc1, desc2, vmatches, 1);
-    //     for (int i = 0; i < static_cast<int>(vmatches.size()); ++i) {
-    //         if (!vmatches[i].size()) {
-    //             continue;
-    //         }
-    //         matches.push_back(vmatches[i][0]);
+    cout << "found " << desc2.rows<<endl;
+    // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
+    // // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
+    // std::vector< std::vector<DMatch> > knn_matches;
+    // matcher->knnMatch( desc1, desc2, knn_matches, 2 );
+    // //-- Filter matches using the Lowe's ratio test
+    // const float ratio_thresh = 0.7f;
+    // std::vector<DMatch> good_matches;
+    // for (size_t i = 0; i < knn_matches.size(); i++)
+    // {
+    //     if (knn_matches[i][0].distance < ratio_thresh * knn_matches[i][1].distance)
+    //     {
+    //         matches.push_back(knn_matches[i][0]);
     //     }
     // }
-    // std::sort(matches.begin(), matches.end());
-    // while (matches.front().distance * kDistanceCoef < matches.back().distance) {
-    //     matches.pop_back();
-    // }
-    // while (matches.size() > kMaxMatchingSize) {
-    //     matches.pop_back();
-    // }
 
-    cout << "found " << desc1.rows<<endl;
-    int k = 2; 
-    double sum_dis = 0;     
-    double dis_ratio = 0.5; 
 
-    cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
-
-    int num_features = desc1.rows; 
-    cv::Mat indices(num_features, k, CV_32S); 
-    cv::Mat dists(num_features, k, CV_32F); 
-    cv::Mat relevantDescriptors = desc1.clone(); 
-
-    mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
-
-    int* indices_ptr = indices.ptr<int>(0); 
-    float* dists_ptr = dists.ptr<float>(0); 
-    cv::DMatch m;
-    set<int> train_ids; 
-    for(int i=0; i<indices.rows; i++){
-        float dis_factor = dists_ptr[i*2] / dists_ptr[i*2+1]; 
-        if(dis_factor < dis_ratio ){
-            int train_id = indices_ptr[i*2]; 
-            if(train_ids.count(train_id) > 0) { // already add this feature 
-                // TODO: select the best matched pair 
-                continue; 
+    type = "bf";
+    if (type == "bf") {
+        BFMatcher desc_matcher(cv::NORM_L2, true);
+        desc_matcher.match(desc1, desc2, matches, Mat());
+    }
+    if (type == "knn") {
+        BFMatcher desc_matcher(cv::NORM_L2, true);
+        vector< vector<DMatch> > vmatches;
+        desc_matcher.knnMatch(desc1, desc2, vmatches, 1);
+        for (int i = 0; i < static_cast<int>(vmatches.size()); ++i) {
+            if (!vmatches[i].size()) {
+                continue;
             }
-            // add this match pair  
-            m.trainIdx = train_id; 
-            m.queryIdx = i; 
-            m.distance = dis_factor;
-            matches.push_back(m);
-            train_ids.insert(train_id); 
+            matches.push_back(vmatches[i][0]);
         }
     }
+    std::sort(matches.begin(), matches.end());
+    while (matches.front().distance * kDistanceCoef < matches.back().distance) {
+        matches.pop_back();
+    }
+    while (matches.size() > kMaxMatchingSize) {
+        matches.pop_back();
+    }
+
+
+    // int k = 2; 
+    // double sum_dis = 0;     
+    // double dis_ratio = 0.5; 
+
+    // cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
+
+    // int num_features = desc1.rows; 
+    // cv::Mat indices(num_features, k, CV_32S); 
+    // cv::Mat dists(num_features, k, CV_32F); 
+    // cv::Mat relevantDescriptors = desc1.clone(); 
+
+    // mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
+
+    // int* indices_ptr = indices.ptr<int>(0); 
+    // float* dists_ptr = dists.ptr<float>(0); 
+    // cv::DMatch m;
+    // set<int> train_ids; 
+    // for(int i=0; i<indices.rows; i++){
+    //     float dis_factor = dists_ptr[i*2] / dists_ptr[i*2+1]; 
+    //     if(dis_factor < dis_ratio ){
+    //         int train_id = indices_ptr[i*2]; 
+    //         if(train_ids.count(train_id) > 0) { // already add this feature 
+    //             // TODO: select the best matched pair 
+    //             continue; 
+    //         }
+    //         // add this match pair  
+    //         m.trainIdx = train_id; 
+    //         m.queryIdx = i; 
+    //         m.distance = dis_factor;
+    //         matches.push_back(m);
+    //         train_ids.insert(train_id); 
+    //     }
+    // }
 
 }
 
@@ -148,7 +166,7 @@ int main(int argc, char** argv)
             0, 1, 0, 0,
             0, 0, 1, 0,
             0, 0, 0, 1;
-    Matrix4f Tm;
+    // Matrix4f Tm;
 
     Matrix4f Tfirst = Tnow;
 
@@ -185,7 +203,7 @@ int main(int argc, char** argv)
     frame1.depth = cv::imread( image_Path+vstrImageFilenamesD[1], -1);
 
     // PointCloud::Ptr cloud1 = image2PointCloud( frame1.rgb, frame1.depth, camera );
-   Mat desc; 
+    Mat desc; 
             
     cv::Mat image;
     Ptr<BriefDescriptorExtractor> brief = BriefDescriptorExtractor::create(64);
@@ -197,19 +215,21 @@ int main(int argc, char** argv)
 
     cvtColor( frame1.rgb.clone(), image, CV_BGR2GRAY );
 
-    bool useFast = false;
+    bool useFast = true;
     if(useFast){
         tic();
         // cv::FAST(image, keypoints, fast_th, true);
         // brief->compute(image, keypoints, brief_descriptors); 
-        sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
+        sift->detect ( image,keypoints );
+        sift->compute ( image, keypoints, brief_descriptors );
+        // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
         toc();
     }
     else
     {
         tic();
         vector<cv::Point2f> tmp_pts;
-        cv::goodFeaturesToTrack(image, tmp_pts, 150, 0.01, 10);
+        cv::goodFeaturesToTrack(image, tmp_pts, 500, 0.01, 10);
         for(int i = 0; i < (int)tmp_pts.size(); i++)
         {
             cv::KeyPoint key;
@@ -226,6 +246,9 @@ int main(int argc, char** argv)
     cv::Mat depth1, depth2;
     vector<cv::KeyPoint> keypoints1,keypoints2;
     Mat descriptors1,descriptors2;
+
+    vector<cv::KeyPoint> keypointsAll;
+    Mat descriptorsAll;
 
     // 第一个帧的三维点
     vector<cv::Point3f> pts_obj;
@@ -247,6 +270,8 @@ int main(int argc, char** argv)
     int res = 500;
 
     int lastCount = 1;
+
+    Mat currT = cv::Mat::eye(4,4,CV_64F);
     // pcl::visualization::CloudViewer viewer( "viewer" );
     while(!input.eof() )
     {
@@ -302,14 +327,18 @@ int main(int argc, char** argv)
                 tic();
                 // cv::FAST(image, keypoints, fast_th, true);
                 // brief->compute(image, keypoints, brief_descriptors); 
-                sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
+
+                sift->detect ( image,keypoints );
+                sift->compute ( image, keypoints, brief_descriptors );
+
+                // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
                 toc();
             }
             else
             {
                 tic();
                 vector<cv::Point2f> tmp_pts;
-                cv::goodFeaturesToTrack(image, tmp_pts, 150, 0.01, 10);
+                cv::goodFeaturesToTrack(image, tmp_pts, 500, 0.01, 10);
                 for(int i = 0; i < (int)tmp_pts.size(); i++)
                 {
                     cv::KeyPoint key;
@@ -351,6 +380,17 @@ int main(int argc, char** argv)
                 cv::Point3f pt ( p.x, p.y, d );
                 cv::Point3f pd = point2dTo3d( pt,  camera);
                 pts_obj.push_back( pd );
+
+
+
+                cv::Point2f p2 = keypoints2[goodMatches[i].trainIdx].pt;
+                ushort d2 = depth2.ptr<ushort>( int(p2.y) )[ int(p2.x) ];
+                if (d == 0)
+                    continue;
+                cv::Point3f pt2 ( p2.x, p2.y, d );
+                cv::Point3f pd2 = point2dTo3d( pt2,  camera);
+                pd2
+                pts_obj.push_back( pd2 );
             }
 
             double camera_matrix_data[3][3] = {
@@ -375,7 +415,8 @@ int main(int argc, char** argv)
             Rodrigues(tvec, mat_r);
             mat_r.copyTo(mat_T(cv::Rect(0, 0, 3, 3)));
             tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
-            cout<<"T="<<endl<<mat_T<<endl;
+            currT = currT*mat_T.inv();
+            cout<<"T="<<endl<<currT<<endl;
 
             // 画出inliers匹配 
             cv::Mat imgMatches;
