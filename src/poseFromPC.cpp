@@ -533,10 +533,13 @@ int main(int argc, char** argv)
     
     pcl::io::savePCDFile(output_Path.c_str(), *output);
     
+    Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1321.png");
+    Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1321.png", -1);
 
-    Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1.png");
-    Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1.png", -1);
-
+    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/378.png");
+    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/378.png", -1);
+    // camera.fx = 531.577087;
+    // camera.fy = 531.577148;
 
     Mat gray;
     cvtColor( rgb, gray, CV_BGR2GRAY );
