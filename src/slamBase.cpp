@@ -58,19 +58,19 @@ cv::Point3f point2dTo3d( cv::Point2f& point, double& d, CAMERA_INTRINSIC_PARAMET
     return p;
 }
 
-// pcl::PointCloud<pcl::PointXYZ> cvPtsToPCL(vector<Point3f> &p_XYZs)
-// {
-//     pcl::PointCloud<pcl::PointXYZ> cloud;
-//     cloud.points.resize (p_XYZs.size());
-//     for (size_t i=0; i<p_XYZs.size(); i++) {
-//         cloud.points[i].x = p_XYZs[i].x;
-//         cloud.points[i].y = p_XYZs[i].y;
-//         cloud.points[i].z = p_XYZs[i].z;
-//     }
-//     cloud.height = 1;
-//     cloud.width = cloud.points.size();
-//     return cloud;
-// }
+pcl::PointCloud<pcl::PointXYZ> cvPtsToPCL(vector<Point3f> &p_XYZs)
+{
+    pcl::PointCloud<pcl::PointXYZ> cloud;
+    cloud.points.resize (p_XYZs.size());
+    for (size_t i=0; i<p_XYZs.size(); i++) {
+        cloud.points[i].x = p_XYZs[i].x;
+        cloud.points[i].y = p_XYZs[i].y;
+        cloud.points[i].z = p_XYZs[i].z;
+    }
+    cloud.height = 1;
+    cloud.width = cloud.points.size();
+    return cloud;
+}
 
 // vector<Point3f> imagToCVpt( Mat depth, CAMERA_INTRINSIC_PARAMETERS& camera ){
 //     vector<Point3f> pts_cv;

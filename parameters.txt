@@ -2,7 +2,7 @@ image_Path=/Users/lingqiujin/Data/06_14_startPoint/
 trajectory_Path=/Users/lingqiujin/Data/06_14_startPoint/CameraTrajectory.txt
 timestamp_Path=/Users/lingqiujin/Data/06_14_startPoint/timestamp.txt
 
-output_Path=/Users/lingqiujin/Data/06_14_startPoint/OBS_labdesk.pcd
+output_Path=/Users/lingqiujin/Data/06_14_startPoint/start.pcd
 
 camera.cx=319.500000
 camera.cy=239.500000
@@ -10,5 +10,5 @@ camera.fx=531.577087
 camera.fy=531.577148
 camera.scale=1000.0
 
-space=5
-voxel_grid=0.02
+space=40
+voxel_grid=0.05
