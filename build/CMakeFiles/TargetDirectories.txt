@@ -1,8 +1,7 @@
-/home/jin/Lingqiu_Jin/PC_from_Traj/build/CMakeFiles/edit_cache.dir
-/home/jin/Lingqiu_Jin/PC_from_Traj/build/CMakeFiles/rebuild_cache.dir
-/home/jin/Lingqiu_Jin/PC_from_Traj/build/src/CMakeFiles/edit_cache.dir
-/home/jin/Lingqiu_Jin/PC_from_Traj/build/src/CMakeFiles/rebuild_cache.dir
-/home/jin/Lingqiu_Jin/PC_from_Traj/build/src/CMakeFiles/PC_from_Traj_name.dir
-/home/jin/Lingqiu_Jin/PC_from_Traj/build/src/CMakeFiles/MypcFromTraj.dir
-/home/jin/Lingqiu_Jin/PC_from_Traj/build/src/CMakeFiles/slambase.dir
-/home/jin/Lingqiu_Jin/PC_from_Traj/build/src/CMakeFiles/PC_from_Traj.dir
+/Users/lingqiujin/work/PC_from_Traj/build/CMakeFiles/rebuild_cache.dir
+/Users/lingqiujin/work/PC_from_Traj/build/CMakeFiles/edit_cache.dir
+/Users/lingqiujin/work/PC_from_Traj/build/src/CMakeFiles/rebuild_cache.dir
+/Users/lingqiujin/work/PC_from_Traj/build/src/CMakeFiles/edit_cache.dir
+/Users/lingqiujin/work/PC_from_Traj/build/src/CMakeFiles/poseFromPC.dir
+/Users/lingqiujin/work/PC_from_Traj/build/src/CMakeFiles/PC_from_Traj.dir
+/Users/lingqiujin/work/PC_from_Traj/build/src/CMakeFiles/slambase.dir

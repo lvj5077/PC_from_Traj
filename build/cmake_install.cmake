@@ -1,4 +1,4 @@
-# Install script for directory: /home/jin/Lingqiu_Jin/PC_from_Traj
+# Install script for directory: /Users/lingqiujin/work/PC_from_Traj
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -27,14 +27,14 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
-# Install shared libraries without execute permission?
-if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "1")
+# Is this installation the result of a crosscompile?
+if(NOT DEFINED CMAKE_CROSSCOMPILING)
+  set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/jin/Lingqiu_Jin/PC_from_Traj/build/src/cmake_install.cmake")
+  include("/Users/lingqiujin/work/PC_from_Traj/build/src/cmake_install.cmake")
 
 endif()
 
@@ -46,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/jin/Lingqiu_Jin/PC_from_Traj/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/lingqiujin/work/PC_from_Traj/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
