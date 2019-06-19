@@ -54,7 +54,8 @@ void toc() {
 
 void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
     matches.clear();
-    cout << "found " << desc2.rows<<endl;
+    // cout << "have " << desc1.rows<<endl;
+    // cout << "found " << desc2.rows<<endl;
     // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // std::vector< std::vector<DMatch> > knn_matches;
@@ -71,7 +72,6 @@ void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
     // }
 
 
-    type = "bf";
     if (type == "bf") {
         BFMatcher desc_matcher(cv::NORM_L2, true);
         desc_matcher.match(desc1, desc2, matches, Mat());
@@ -218,10 +218,10 @@ int main(int argc, char** argv)
     bool useFast = true;
     if(useFast){
         tic();
-        // cv::FAST(image, keypoints, fast_th, true);
-        // brief->compute(image, keypoints, brief_descriptors); 
-        sift->detect ( image,keypoints );
-        sift->compute ( image, keypoints, brief_descriptors );
+        cv::FAST(image, keypoints, fast_th, true);
+        brief->compute(image, keypoints, brief_descriptors); 
+        // sift->detect ( image,keypoints );
+        // sift->compute ( image, keypoints, brief_descriptors );
         // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
         toc();
     }
@@ -249,6 +249,7 @@ int main(int argc, char** argv)
 
     vector<cv::KeyPoint> keypointsAll;
     Mat descriptorsAll;
+    vector<cv::Point3f> pts_objAll;
 
     // 第一个帧的三维点
     vector<cv::Point3f> pts_obj;
@@ -325,11 +326,11 @@ int main(int argc, char** argv)
             
             if(useFast){
                 tic();
-                // cv::FAST(image, keypoints, fast_th, true);
-                // brief->compute(image, keypoints, brief_descriptors); 
+                cv::FAST(image, keypoints, fast_th, true);
+                brief->compute(image, keypoints, brief_descriptors); 
 
-                sift->detect ( image,keypoints );
-                sift->compute ( image, keypoints, brief_descriptors );
+                // sift->detect ( image,keypoints );
+                // sift->compute ( image, keypoints, brief_descriptors );
 
                 // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
                 toc();
@@ -349,7 +350,41 @@ int main(int argc, char** argv)
                 toc();
             }
             
-            cout << keypoints.size()<<endl;
+            // cout << keypoints.size()<<endl;
+
+
+
+            // vector<cv::KeyPoint> keypointsAll;
+            // Mat descriptorsAll;
+            // vector<cv::Point3f> pts_objAll;
+            // feature融合 对匹配上的点做3d稀疏点云拓展
+            for (size_t i=0; i<keypoints.size(); i++)
+            {
+                cv::Point2f p = keypoints[i].pt;
+
+                ushort d = frame2.depth.ptr<ushort>( int(p.y) )[ int(p.x) ];
+                if (d == 0)
+                    continue;
+
+                // 将(u,v,d)转成(x,y,z)
+                cv::Point3f pt ( p.x, p.y, d );
+                cv::Point3f pd1 = point2dTo3d( pt,  camera);
+
+                cv::Mat ptMat = (cv::Mat_<double>(4, 1) << pd1.x, pd1.y, pd1.z, 1);
+
+                MatrixXf matA(4, 1);
+                MatrixXf matB(4, 1);
+                matA << pd1.x, pd1.y, pd1.z, 1;
+                matB = Tnow.inverse()*matA ;
+                cv::Point3f projPd(matB(0,0), matB(1,0),matB(2,0));
+
+                keypointsAll.push_back(keypoints[i]);
+                pts_objAll.push_back( projPd );
+            }
+            // sift->compute( image, keypointsAll, descriptorsAll );
+            brief->compute(image, keypointsAll, descriptorsAll); 
+
+
 
             image1 = image2.clone();
             image2 = image.clone();
@@ -364,8 +399,8 @@ int main(int argc, char** argv)
             pts_obj.clear();
 
             vector<DMatch> goodMatches;
-            match("knn", descriptors1, descriptors2, goodMatches);
-            cout<<"goodMatches: "<<goodMatches.size()<<endl;
+            match("bf", descriptors1, descriptors2, goodMatches);
+            // cout<<"goodMatches: "<<goodMatches.size()<<endl;
             for (size_t i=0; i<goodMatches.size(); i++)
             {
                 // query 是第一个, train 是第二个
@@ -380,17 +415,6 @@ int main(int argc, char** argv)
                 cv::Point3f pt ( p.x, p.y, d );
                 cv::Point3f pd = point2dTo3d( pt,  camera);
                 pts_obj.push_back( pd );
-
-
-
-                cv::Point2f p2 = keypoints2[goodMatches[i].trainIdx].pt;
-                ushort d2 = depth2.ptr<ushort>( int(p2.y) )[ int(p2.x) ];
-                if (d == 0)
-                    continue;
-                cv::Point3f pt2 ( p2.x, p2.y, d );
-                cv::Point3f pd2 = point2dTo3d( pt2,  camera);
-                pd2
-                pts_obj.push_back( pd2 );
             }
 
             double camera_matrix_data[3][3] = {
@@ -403,16 +427,16 @@ int main(int argc, char** argv)
             cv::Mat cameraMatrix( 3, 3, CV_64F, camera_matrix_data );
             cv::Mat rvec, tvec, inliers;
             // 求解pnp
-            cout<<"pts_obj: "<<pts_obj.size()<<endl;
-            cout<<"pts_img: "<<pts_img.size()<<endl;
-            cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 5.0, 0.99, inliers );
+            // cout<<"pts_obj: "<<pts_obj.size()<<endl;
+            // cout<<"pts_img: "<<pts_img.size()<<endl;
+            cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 1.0, 0.99, inliers );
 
-            cout<<"inliers: "<<inliers.rows<<endl;
+            // cout<<"inliers: "<<inliers.rows<<endl;
             // cout<<"R="<<rvec<<endl;
             // cout<<"t="<<tvec<<endl;
             cv::Mat mat_T = cv::Mat::eye(4,4,CV_64F);
             Mat mat_r;
-            Rodrigues(tvec, mat_r);
+            Rodrigues(rvec, mat_r);
             mat_r.copyTo(mat_T(cv::Rect(0, 0, 3, 3)));
             tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
             currT = currT*mat_T.inv();
@@ -426,22 +450,65 @@ int main(int argc, char** argv)
                 matchesShow.push_back( goodMatches[inliers.ptr<int>(i)[0]] );    
             }
 
-            // cv::imshow( "image", image );
+            // cv::drawMatches( image1, keypoints1, image2, keypoints2, matchesShow, imgMatches );
+            // cv::imshow( "inlier matches", imgMatches );
             // cv::waitKey( 0 );
-            string ssRGB222 = image_Path+vstrImageFilenamesRGB[count];
-            Mat rgb2 = cv::imread( ssRGB222 );
-            string ssRGB111 = image_Path+vstrImageFilenamesRGB[lastCount];
-            Mat rgb1 = cv::imread( ssRGB111 );
-            lastCount = count;
-            cv::drawMatches( image1, keypoints1, image2, keypoints2, matchesShow, imgMatches );
-            cv::imshow( "inlier matches", imgMatches );
-            cv::waitKey( 0 );
 
 
 
 
 
+            pts_img.clear();
+            pts_obj.clear();
+            vector<DMatch> gloabalMatches;
+            match("bf", descriptorsAll, descriptors2, gloabalMatches);
+            cout<<"gloabalMatches: "<<gloabalMatches.size()<<endl;
 
+
+            vector<cv::KeyPoint> keypoints2Show;
+            for (size_t i=0; i<gloabalMatches.size(); i++)
+            {
+                pts_img.push_back( cv::Point2f( keypoints2[gloabalMatches[i].trainIdx].pt ) );
+
+                cv::Point3f pd = pts_objAll[gloabalMatches[i].queryIdx];
+                pts_obj.push_back( pd );
+                keypoints2Show.push_back( keypoints2[gloabalMatches[i].trainIdx] );
+            }
+            // cout<<"pts_obj: "<<pts_obj.size()<<endl;
+            // cout<<"pts_img: "<<pts_img.size()<<endl;
+            cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 1.0, 0.99, inliers );
+
+            cout<<"inliers: "<<inliers.rows<<endl;
+
+
+            if (count>1){
+                for (size_t i=0; i<inliers.rows; i++)
+                {
+                    int idx = inliers.ptr<int>(i)[0];
+                    keypointsAll[idx] = keypointsAll.back();
+                    keypointsAll.pop_back();
+                    
+                    pts_objAll[idx] = pts_objAll.back();
+                    pts_objAll.pop_back();
+                }
+            }
+
+
+
+
+
+            mat_T = cv::Mat::eye(4,4,CV_64F);
+            Rodrigues(rvec, mat_r);
+            mat_r.copyTo(mat_T(cv::Rect(0, 0, 3, 3)));
+            tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
+            cout<<"T_globalMatch="<<endl<<mat_T<<endl;
+
+            cv::Mat imgShow;
+            cv::drawKeypoints( image2, keypoints2Show, imgShow, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
+            cv::imshow( "keypoints", imgShow );
+            cv::waitKey(0); 
+
+            // 点云融合 可视化 没啥用
             PointCloud::Ptr cloud2 = image2PointCloud( frame2.rgb, frame2.depth, camera );
             pcl::transformPointCloud( *cloud2, *cloud2, Tnow.matrix() );
             *output += *cloud2;
@@ -450,6 +517,15 @@ int main(int argc, char** argv)
             voxel.setInputCloud( output );
             voxel.filter( *output );
             cloud2->points.clear();
+
+            cout << "saved " << keypointsAll.size()<<endl;
+            cout<<"====================================================================="<<endl;
+
+
+
+
+
+
         }
     }
 
