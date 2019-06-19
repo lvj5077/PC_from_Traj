@@ -25,3 +25,10 @@ TARGET_LINK_LIBRARIES( PC_from_Traj
     slambase
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES} )
+
+
+ADD_EXECUTABLE( poseFromPC poseFromPC.cpp)
+TARGET_LINK_LIBRARIES( poseFromPC
+    slambase
+    ${OpenCV_LIBS} 
+    ${PCL_LIBRARIES} )
