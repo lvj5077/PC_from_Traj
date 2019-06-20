@@ -11,5 +11,5 @@ camera.fy=531.577148
 camera.scale=1000.0
 
 # 为啥只有50倍的时候是对的！！！
-space= 180
+space= 45
 voxel_grid=0.02

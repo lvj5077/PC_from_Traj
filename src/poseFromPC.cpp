@@ -219,10 +219,10 @@ int main(int argc, char** argv)
     bool useFast = true;
     if(useFast){
         tic();
-        // cv::FAST(image, keypoints, fast_th, true);
-        // brief->compute(image, keypoints, brief_descriptors); 
-        sift->detect ( image,keypoints );
-        sift->compute ( image, keypoints, brief_descriptors );
+        cv::FAST(image, keypoints, fast_th, true);
+        brief->compute(image, keypoints, brief_descriptors); 
+        // sift->detect ( image,keypoints );
+        // sift->compute ( image, keypoints, brief_descriptors );
         // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
         toc();
     }
@@ -327,11 +327,11 @@ int main(int argc, char** argv)
             
             if(useFast){
                 tic();
-                // cv::FAST(image, keypoints, fast_th, true);
-                // brief->compute(image, keypoints, brief_descriptors); 
+                cv::FAST(image, keypoints, fast_th, true);
+                brief->compute(image, keypoints, brief_descriptors); 
 
-                sift->detect ( image,keypoints );
-                sift->compute ( image, keypoints, brief_descriptors );
+                // sift->detect ( image,keypoints );
+                // sift->compute ( image, keypoints, brief_descriptors );
 
                 // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
                 toc();
@@ -383,8 +383,8 @@ int main(int argc, char** argv)
                 keypointsAll.push_back(keypoints[i]);
                 pts_objAll.push_back( projPd );
             }
-            sift->compute ( image, keypointsAll, descriptorsAll );
-            // brief->compute ( image, keypointsAll, descriptorsAll );
+            // sift->compute ( image, keypointsAll, descriptorsAll );
+            brief->compute ( image, keypointsAll, descriptorsAll );
 
 
 
@@ -463,7 +463,7 @@ int main(int argc, char** argv)
             pts_img.clear();
             pts_obj.clear();
             vector<DMatch> gloabalMatches;
-            match("bf", descriptorsAll, descriptors2, gloabalMatches);
+            match("knn", descriptorsAll, descriptors2, gloabalMatches);
             cout<<"gloabalMatches: "<<gloabalMatches.size()<<endl;
 
 
@@ -478,7 +478,7 @@ int main(int argc, char** argv)
             }
             // cout<<"pts_obj: "<<pts_obj.size()<<endl;
             // cout<<"pts_img: "<<pts_img.size()<<endl;
-            cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 1.0, 0.99, inliers );
+            cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 3.0, 0.95, inliers );
 
             cout<<"inliers: "<<inliers.rows<<endl;
 
@@ -507,7 +507,7 @@ int main(int argc, char** argv)
             cout<<"T_globalMatch="<<endl<<mat_T<<endl;
 
             // cv::Mat imgShow;
-            // cv::drawKeypoints( image2, keypoints2Show, imgShow, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
+            // cv::drawKeypoints( image2, keypoints2, imgShow, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
             // cv::imshow( "keypoints", imgShow );
             // cv::waitKey(0); 
 
@@ -545,10 +545,10 @@ int main(int argc, char** argv)
 
 
 
-    tic();
+    
 
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1311.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1311.png", -1);
+    Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1311.png");
+    Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1311.png", -1);
 
 
 
@@ -556,24 +556,25 @@ int main(int argc, char** argv)
     // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/230.png", -1);
 
 
-    Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/230.png");
-    Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/230.png", -1);
-    camera.fx = 530.562866;
-    camera.fy = 530.562927;
+    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/115.png");
+    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/115.png", -1);
+    // camera.fx = 530.562866;
+    // camera.fy = 530.562927;
 
     Mat gray;
     cvtColor( rgb, gray, CV_BGR2GRAY );
-            
+    keypoints.clear();  
+    tic();      
     if(useFast){
-        tic();
-        // cv::FAST(image, keypoints, fast_th, true);
-        // brief->compute(image, keypoints, brief_descriptors); 
+        
+        cv::FAST(gray, keypoints, fast_th, true);
+        brief->compute(gray, keypoints, brief_descriptors); 
 
-        sift->detect ( gray,keypoints );
-        sift->compute ( gray, keypoints, brief_descriptors );
+        // sift->detect ( gray,keypoints );
+        // sift->compute ( gray, keypoints, brief_descriptors );
 
         // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
-        toc();
+        
     }
     else
     {
@@ -589,14 +590,17 @@ int main(int argc, char** argv)
         brief->compute(gray, keypoints, brief_descriptors); 
         toc();
     }
-            
+    toc();        
 
+    tic();
     pts_img.clear();
     pts_obj.clear();
 
     vector<DMatch> goodMatches;
-    match("bf", descriptorsAll, brief_descriptors, goodMatches);
-    // cout<<"goodMatches: "<<goodMatches.size()<<endl;
+    goodMatches.clear();
+    match("knn", descriptorsAll, brief_descriptors, goodMatches);
+    cout<<"goodMatches: "<<goodMatches.size()<<endl;
+
     for (size_t i=0; i<goodMatches.size(); i++)
     {
         pts_img.push_back( cv::Point2f( keypoints[goodMatches[i].queryIdx].pt ) );
@@ -604,7 +608,6 @@ int main(int argc, char** argv)
         cv::Point3f pd = pts_objAll[goodMatches[i].trainIdx];
         pts_obj.push_back( pd );
     }
-
     double camera_matrix_data[3][3] = {
         {camera.fx, 0, camera.cx},
         {0, camera.fy, camera.cy},
@@ -617,8 +620,18 @@ int main(int argc, char** argv)
     // 求解pnp
     cout<<"pts_obj: "<<pts_obj.size()<<endl;
     cout<<"pts_img: "<<pts_img.size()<<endl;
-    cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 1.0, 0.99, inliers );
 
+
+    // PointCloud::Ptr pts_objPC = cvPtsToRGBPC(pts_obj,255,0,0);
+    // *pts_objPC = *pts_objPC + *output;
+    // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/pts_obj.pcd", *pts_objPC);
+
+
+    cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 3.0, 0.99, inliers );
+
+    toc();
+
+    
     cout<<"inliers: "<<inliers.rows<<endl;
     cout<<"R="<<rvec<<endl;
     cout<<"t="<<tvec<<endl;
@@ -632,17 +645,17 @@ int main(int argc, char** argv)
     mat_T = mat_T.inv();
     cout<<"T_query="<<endl<<mat_T<<endl;
 
-    toc();
+    
 
-    vector<cv::Point3f> pts_Tracked;
-    vector<cv::KeyPoint> keypoints2Show;
-    for (size_t i=0; i<inliers.rows; i++)
-    {
-        keypoints2Show.push_back( keypoints2[  (goodMatches[inliers.ptr<int>(i)[0]] ) .queryIdx] );
-        pts_Tracked.push_back( pts_obj[inliers.ptr<int>(i)[0]] );
-    }
+    // vector<cv::Point3f> pts_Tracked;
+    // vector<cv::KeyPoint> keypoints2Show;
+    // for (size_t i=0; i<inliers.rows; i++)
+    // {
+    //     keypoints2Show.push_back( keypoints2[  (goodMatches[inliers.ptr<int>(i)[0]] ) .queryIdx] );
+    //     pts_Tracked.push_back( pts_obj[inliers.ptr<int>(i)[0]] );
+    // }
     // cv::Mat imgShow;
-    // cv::drawKeypoints( image2, keypoints2Show, imgShow, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
+    // cv::drawKeypoints( gray, keypoints, imgShow, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
     // cv::imshow( "keypoints", imgShow );
     // cv::waitKey(0); 
 
@@ -654,10 +667,10 @@ int main(int argc, char** argv)
     *output += *cloud2;
     pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/check.pcd", *output);
 
-    PointCloud::Ptr ptsTrackPC = cvPtsToRGBPC(pts_Tracked,0,0,255);
-    *ptsTrackPC = *ptsTrackPC + *output;
-    *ptsTrackPC = *ptsTrackPC + *pts_objAllpcl;
-    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/tracked.pcd", *ptsTrackPC);
+    // PointCloud::Ptr ptsTrackPC = cvPtsToRGBPC(pts_Tracked,0,0,255);
+    // *ptsTrackPC = *ptsTrackPC + *output;
+    // *ptsTrackPC = *ptsTrackPC + *pts_objAllpcl;
+    // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/tracked.pcd", *ptsTrackPC);
 
     return 0;
 }
