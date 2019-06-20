@@ -73,7 +73,7 @@ pcl::PointCloud<pcl::PointXYZ> cvPtsToPCL(vector<Point3f> &p_XYZs)
 }
 
 
-PointCloud::Ptr cvPtsToGreenPC( vector<Point3f> &p_XYZs){
+PointCloud::Ptr cvPtsToRGBPC( vector<Point3f> &p_XYZs, int r, int g, int b){
 
     PointCloud::Ptr cloud ( new PointCloud );
     for (size_t i=0; i<p_XYZs.size(); i++) {
@@ -81,9 +81,9 @@ PointCloud::Ptr cvPtsToGreenPC( vector<Point3f> &p_XYZs){
         p.x = p_XYZs[i].x;
         p.y = p_XYZs[i].y;
         p.z = p_XYZs[i].z;
-        p.b = 0;
-        p.g = 255;
-        p.r = 0;
+        p.b = b;
+        p.g = g;
+        p.r = r;
 
         // 把p加入到点云中
         cloud->points.push_back( p );

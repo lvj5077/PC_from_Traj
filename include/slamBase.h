@@ -62,4 +62,4 @@ vector<Point3f> imagToCVpt( Mat depth, CAMERA_INTRINSIC_PARAMETERS& camera );
 Eigen::Isometry3d cvTtoEigenT( Mat cv44T);
 
 
-PointCloud::Ptr cvPtsToGreenPC( vector<Point3f> &p_XYZs);
+PointCloud::Ptr cvPtsToRGBPC( vector<Point3f> &p_XYZs, int r, int g, int b);
