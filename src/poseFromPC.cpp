@@ -54,8 +54,8 @@ void toc() {
 
 void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
     matches.clear();
-    // cout << "have " << desc1.rows<<endl;
-    // cout << "found " << desc2.rows<<endl;
+    cout << "have desc1" << desc1.rows<<endl;
+    cout << "found desc2" << desc2.rows<<endl;
     // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // std::vector< std::vector<DMatch> > knn_matches;
@@ -376,7 +376,8 @@ int main(int argc, char** argv)
                 MatrixXf matA(4, 1);
                 MatrixXf matB(4, 1);
                 matA << pd1.x, pd1.y, pd1.z, 1;
-                matB = Tnow.inverse()*matA ;
+                // matB = Tnow.inverse()*matA ;
+                matB = Tnow.matrix()*matA ;
                 cv::Point3f projPd(matB(0,0), matB(1,0),matB(2,0));
 
                 keypointsAll.push_back(keypoints[i]);
@@ -481,17 +482,17 @@ int main(int argc, char** argv)
             cout<<"inliers: "<<inliers.rows<<endl;
 
 
-            if (count>1){
-                for (size_t i=0; i<inliers.rows; i++)
-                {
-                    int idx = inliers.ptr<int>(i)[0];
-                    keypointsAll[idx] = keypointsAll.back();
-                    keypointsAll.pop_back();
+            // if (count>1){
+            //     for (size_t i=0; i<inliers.rows; i++)
+            //     {
+            //         int idx = inliers.ptr<int>(i)[0];
+            //         keypointsAll[idx] = keypointsAll.back();
+            //         keypointsAll.pop_back();
                     
-                    pts_objAll[idx] = pts_objAll.back();
-                    pts_objAll.pop_back();
-                }
-            }
+            //         pts_objAll[idx] = pts_objAll.back();
+            //         pts_objAll.pop_back();
+            //     }
+            // }
 
 
 
@@ -528,18 +529,24 @@ int main(int argc, char** argv)
 
         }
     }
-
-    
-    
     pcl::io::savePCDFile(output_Path.c_str(), *output);
-    
-    Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1321.png");
-    Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1321.png", -1);
 
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/378.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/378.png", -1);
-    // camera.fx = 531.577087;
-    // camera.fy = 531.577148;
+
+    PointCloud::Ptr pts_objAllpcl = cvPtsToGreenPC(pts_objAll);
+    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/sparse.pcd", *pts_objAllpcl);
+    
+    *pts_objAllpcl = *pts_objAllpcl+ *output;
+    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/sparseInPC.pcd", *pts_objAllpcl);
+
+
+/* ============================================================================== */
+    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1365.png");
+    // Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1365.png", -1);
+
+    Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/378.png");
+    Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/378.png", -1);
+    camera.fx = 531.577087;
+    camera.fy = 531.577148;
 
     Mat gray;
     cvtColor( rgb, gray, CV_BGR2GRAY );
@@ -611,6 +618,14 @@ int main(int argc, char** argv)
     tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
     cout<<"T_query="<<endl<<mat_T<<endl;
 
+
+
+
+    // vector<cv::KeyPoint> keypoints2Show;
+    // for (size_t i=0; i<inliers.rows; i++)
+    // {
+    //     keypoints2Show.push_back( keypoints2[  (goodMatches[inliers.ptr<int>(i)[0]] ) .trainIdx] );
+    // }
     // cv::Mat imgShow;
     // cv::drawKeypoints( image2, keypoints2Show, imgShow, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
     // cv::imshow( "keypoints", imgShow );
@@ -619,7 +634,7 @@ int main(int argc, char** argv)
     Eigen::Isometry3d T_eigen = cvTtoEigenT(mat_T);
 
     PointCloud::Ptr cloud2 = image2PointCloud( rgb.setTo(cv::Scalar(0,0,255)), depth, camera );
-    pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.matrix() );
+    pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.inverse().matrix() );
     *output += *cloud2;
     pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/check.pcd", *output);
 

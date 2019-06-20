@@ -60,3 +60,6 @@ cv::Point3f point2dTo3d( cv::Point2f& point, double& d, CAMERA_INTRINSIC_PARAMET
 pcl::PointCloud<pcl::PointXYZ> cvPtsToPCL(vector<Point3f> &p_XYZs);
 vector<Point3f> imagToCVpt( Mat depth, CAMERA_INTRINSIC_PARAMETERS& camera );
 Eigen::Isometry3d cvTtoEigenT( Mat cv44T);
+
+
+PointCloud::Ptr cvPtsToGreenPC( vector<Point3f> &p_XYZs);

@@ -73,6 +73,28 @@ pcl::PointCloud<pcl::PointXYZ> cvPtsToPCL(vector<Point3f> &p_XYZs)
 }
 
 
+PointCloud::Ptr cvPtsToGreenPC( vector<Point3f> &p_XYZs){
+
+    PointCloud::Ptr cloud ( new PointCloud );
+    for (size_t i=0; i<p_XYZs.size(); i++) {
+        PointT p;
+        p.x = p_XYZs[i].x;
+        p.y = p_XYZs[i].y;
+        p.z = p_XYZs[i].z;
+        p.b = 0;
+        p.g = 255;
+        p.r = 0;
+
+        // 把p加入到点云中
+        cloud->points.push_back( p );
+    }
+    cloud->height = 1;
+    cloud->width = cloud->points.size();
+    cloud->is_dense = false;
+
+    return cloud; 
+}
+
 Eigen::Isometry3d cvTtoEigenT( Mat cv44T){
     Eigen::Isometry3d T_eigen = Eigen::Isometry3d::Identity();
 
