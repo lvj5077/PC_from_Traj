@@ -482,17 +482,17 @@ int main(int argc, char** argv)
             cout<<"inliers: "<<inliers.rows<<endl;
 
 
-            // if (count>1){
-            //     for (size_t i=0; i<inliers.rows; i++)
-            //     {
-            //         int idx = inliers.ptr<int>(i)[0];
-            //         keypointsAll[idx] = keypointsAll.back();
-            //         keypointsAll.pop_back();
+            if (count>1){
+                for (size_t i=0; i<inliers.rows; i++)
+                {
+                    int idx = inliers.ptr<int>(i)[0];
+                    keypointsAll[idx] = keypointsAll.back();
+                    keypointsAll.pop_back();
                     
-            //         pts_objAll[idx] = pts_objAll.back();
-            //         pts_objAll.pop_back();
-            //     }
-            // }
+                    pts_objAll[idx] = pts_objAll.back();
+                    pts_objAll.pop_back();
+                }
+            }
 
 
 
@@ -543,7 +543,7 @@ int main(int argc, char** argv)
 
 
 
-
+    tic();
 
     Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/230.png");
     Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/230.png", -1);
@@ -629,7 +629,7 @@ int main(int argc, char** argv)
     tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
     cout<<"T_query="<<endl<<mat_T<<endl;
 
-
+    toc();
 
     vector<cv::Point3f> pts_Tracked;
     vector<cv::KeyPoint> keypoints2Show;
