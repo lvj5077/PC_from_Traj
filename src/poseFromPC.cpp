@@ -36,7 +36,7 @@ using cv::xfeatures2d::BriefDescriptorExtractor;
 using cv::xfeatures2d::SIFT;
 using namespace Eigen;
 
-const double kDistanceCoef = 4.0;
+const double kDistanceCoef = 5.0;
 const int kMaxMatchingSize = 100;
 
 std::stack<clock_t> tictoc_stack;
@@ -135,13 +135,17 @@ void match(string type, Mat& desc2, Mat& desc1, vector<DMatch>& matches) {
 
 int main(int argc, char** argv)
 {
+    bool useFast = false;
+
+
     cout<<endl<<"Program Started!"<<endl;
     cout <<"~~~~~~~~~~~~~~~~~~"<<endl<<endl;
     string ParameterPath = "/Users/lingqiujin/work/PC_from_Traj/parameters.txt";
     if(argc >=2){
-    	ParameterPath = argv[1];
+    	// ParameterPath = argv[1];
+        useFast= true;
     }
-
+    
     ParameterReader pd(ParameterPath);
 
     string image_Path       = pd.getData( "image_Path" );
@@ -216,7 +220,7 @@ int main(int argc, char** argv)
 
     cvtColor( frame1.rgb.clone(), image, CV_BGR2GRAY );
 
-    bool useFast = true;
+    
     if(useFast){
         tic();
         cv::FAST(image, keypoints, fast_th, true);
@@ -229,15 +233,20 @@ int main(int argc, char** argv)
     else
     {
         tic();
-        vector<cv::Point2f> tmp_pts;
-        cv::goodFeaturesToTrack(image, tmp_pts, 500, 0.01, 10);
-        for(int i = 0; i < (int)tmp_pts.size(); i++)
-        {
-            cv::KeyPoint key;
-            key.pt = tmp_pts[i];
-            keypoints.push_back(key);
-        }
-        brief->compute(image, keypoints, brief_descriptors); 
+        // vector<cv::Point2f> tmp_pts;
+        // cv::goodFeaturesToTrack(image, tmp_pts, 500, 0.01, 10);
+        // for(int i = 0; i < (int)tmp_pts.size(); i++)
+        // {
+        //     cv::KeyPoint key;
+        //     key.pt = tmp_pts[i];
+        //     keypoints.push_back(key);
+        // }
+        // brief->compute(image, keypoints, brief_descriptors); 
+
+        sift->detect ( image,keypoints );
+        sift->compute ( image, keypoints, brief_descriptors );
+
+
         toc();
     } 
 
@@ -339,15 +348,20 @@ int main(int argc, char** argv)
             else
             {
                 tic();
-                vector<cv::Point2f> tmp_pts;
-                cv::goodFeaturesToTrack(image, tmp_pts, 500, 0.01, 10);
-                for(int i = 0; i < (int)tmp_pts.size(); i++)
-                {
-                    cv::KeyPoint key;
-                    key.pt = tmp_pts[i];
-                    keypoints.push_back(key);
-                }
-                brief->compute(image, keypoints, brief_descriptors); 
+                // vector<cv::Point2f> tmp_pts;
+                // cv::goodFeaturesToTrack(image, tmp_pts, 500, 0.01, 10);
+                // for(int i = 0; i < (int)tmp_pts.size(); i++)
+                // {
+                //     cv::KeyPoint key;
+                //     key.pt = tmp_pts[i];
+                //     keypoints.push_back(key);
+                // }
+                // brief->compute(image, keypoints, brief_descriptors); 
+
+                sift->detect ( image,keypoints );
+                sift->compute ( image, keypoints, brief_descriptors );
+
+
                 toc();
             }
             
@@ -383,8 +397,14 @@ int main(int argc, char** argv)
                 keypointsAll.push_back(keypoints[i]);
                 pts_objAll.push_back( projPd );
             }
-            // sift->compute ( image, keypointsAll, descriptorsAll );
-            brief->compute ( image, keypointsAll, descriptorsAll );
+
+            if(useFast){
+                brief->compute ( image, keypointsAll, descriptorsAll );
+            }
+            else{
+                sift->compute ( image, keypointsAll, descriptorsAll );
+            }
+            
 
 
 
@@ -564,11 +584,15 @@ int main(int argc, char** argv)
     Mat gray;
     cvtColor( rgb, gray, CV_BGR2GRAY );
     keypoints.clear();  
+    tic(); 
     tic();      
     if(useFast){
         
+        tic();  
         cv::FAST(gray, keypoints, fast_th, true);
         brief->compute(gray, keypoints, brief_descriptors); 
+        cout <<"fast time: ";
+        toc();  
 
         // sift->detect ( gray,keypoints );
         // sift->compute ( gray, keypoints, brief_descriptors );
@@ -579,16 +603,21 @@ int main(int argc, char** argv)
     else
     {
         tic();
-        vector<cv::Point2f> tmp_pts;
-        cv::goodFeaturesToTrack(gray, tmp_pts, 500, 0.01, 10);
-        for(int i = 0; i < (int)tmp_pts.size(); i++)
-        {
-            cv::KeyPoint key;
-            key.pt = tmp_pts[i];
-            keypoints.push_back(key);
-        }
-        brief->compute(gray, keypoints, brief_descriptors); 
+        // vector<cv::Point2f> tmp_pts;
+        // cv::goodFeaturesToTrack(gray, tmp_pts, 500, 0.01, 10);
+        // for(int i = 0; i < (int)tmp_pts.size(); i++)
+        // {
+        //     cv::KeyPoint key;
+        //     key.pt = tmp_pts[i];
+        //     keypoints.push_back(key);
+        // }
+        // brief->compute(gray, keypoints, brief_descriptors); 
+        // toc();
+        sift->detect ( gray,keypoints );
+        sift->compute ( gray, keypoints, brief_descriptors );
+        cout <<"sift time: ";
         toc();
+
     }
     toc();        
 
@@ -600,7 +629,9 @@ int main(int argc, char** argv)
     goodMatches.clear();
     match("knn", descriptorsAll, brief_descriptors, goodMatches);
     cout<<"goodMatches: "<<goodMatches.size()<<endl;
+    toc(); 
 
+    tic();
     for (size_t i=0; i<goodMatches.size(); i++)
     {
         pts_img.push_back( cv::Point2f( keypoints[goodMatches[i].queryIdx].pt ) );
@@ -630,8 +661,8 @@ int main(int argc, char** argv)
     cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 3.0, 0.99, inliers );
 
     toc();
+    toc();
 
-    
     cout<<"inliers: "<<inliers.rows<<endl;
     cout<<"R="<<rvec<<endl;
     cout<<"t="<<tvec<<endl;
