@@ -483,17 +483,17 @@ int main(int argc, char** argv)
             cout<<"inliers: "<<inliers.rows<<endl;
 
 
-            // if (count>1){
-            //     for (size_t i=0; i<inliers.rows; i++)
-            //     {
-            //         int idx = inliers.ptr<int>(i)[0];
-            //         keypointsAll[idx] = keypointsAll.back();
-            //         keypointsAll.pop_back();
+            if (count>1){
+                for (size_t i=0; i<inliers.rows; i++)
+                {
+                    int idx = inliers.ptr<int>(i)[0];
+                    keypointsAll[idx] = keypointsAll.back();
+                    keypointsAll.pop_back();
                     
-            //         pts_objAll[idx] = pts_objAll.back();
-            //         pts_objAll.pop_back();
-            //     }
-            // }
+                    pts_objAll[idx] = pts_objAll.back();
+                    pts_objAll.pop_back();
+                }
+            }
 
 
 
