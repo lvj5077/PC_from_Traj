@@ -111,6 +111,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named slambase
+
+# Build rule for target.
+slambase: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 slambase
+.PHONY : slambase
+
+# fast build rule for target.
+slambase/fast:
+	$(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
+.PHONY : slambase/fast
+
+#=============================================================================
+# Target rules for targets named sift
+
+# Build rule for target.
+sift: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sift
+.PHONY : sift
+
+# fast build rule for target.
+sift/fast:
+	$(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/build
+.PHONY : sift/fast
+
+#=============================================================================
 # Target rules for targets named PC_from_Traj
 
 # Build rule for target.
@@ -149,19 +175,6 @@ poseFromPC/fast:
 	$(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/build
 .PHONY : poseFromPC/fast
 
-#=============================================================================
-# Target rules for targets named slambase
-
-# Build rule for target.
-slambase: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 slambase
-.PHONY : slambase
-
-# fast build rule for target.
-slambase/fast:
-	$(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
-.PHONY : slambase/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -170,10 +183,11 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... slambase"
+	@echo "... sift"
 	@echo "... PC_from_Traj"
 	@echo "... testMatch"
 	@echo "... poseFromPC"
-	@echo "... slambase"
 .PHONY : help
 
 

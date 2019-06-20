@@ -38,3 +38,10 @@ TARGET_LINK_LIBRARIES( testMatch
     slambase
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES} )
+
+
+ADD_EXECUTABLE( sift sift.cpp)
+TARGET_LINK_LIBRARIES( sift
+    slambase
+    ${OpenCV_LIBS} 
+    ${PCL_LIBRARIES} )

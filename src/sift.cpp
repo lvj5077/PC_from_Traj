@@ -54,8 +54,8 @@ void toc() {
 
 void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
     matches.clear();
-    cout << "have desc1 " << desc1.rows<<endl;
-    cout << "found desc2 " << desc2.rows<<endl;
+    cout << "have desc1" << desc1.rows<<endl;
+    cout << "found desc2" << desc2.rows<<endl;
     // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // std::vector< std::vector<DMatch> > knn_matches;
@@ -72,63 +72,63 @@ void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
     // }
 
 
-    // if (type == "bf") {
-    //     BFMatcher desc_matcher(cv::NORM_L2, true);
-    //     desc_matcher.match(desc1, desc2, matches, Mat());
-    // }
-    // if (type == "knn") {
-    //     BFMatcher desc_matcher(cv::NORM_L2, true);
-    //     vector< vector<DMatch> > vmatches;
-    //     desc_matcher.knnMatch(desc1, desc2, vmatches, 1);
-    //     for (int i = 0; i < static_cast<int>(vmatches.size()); ++i) {
-    //         if (!vmatches[i].size()) {
-    //             continue;
-    //         }
-    //         matches.push_back(vmatches[i][0]);
-    //     }
-    // }
-    // std::sort(matches.begin(), matches.end());
-    // while (matches.front().distance * kDistanceCoef < matches.back().distance) {
-    //     matches.pop_back();
-    // }
-    // while (matches.size() > kMaxMatchingSize) {
-    //     matches.pop_back();
-    // }
-
-
-    int k = 2; 
-    double sum_dis = 0;     
-    double dis_ratio = 0.5; 
-
-    cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
-
-    int num_features = desc1.rows; 
-    cv::Mat indices(num_features, k, CV_32S); 
-    cv::Mat dists(num_features, k, CV_32F); 
-    cv::Mat relevantDescriptors = desc1.clone(); 
-
-    mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
-
-    int* indices_ptr = indices.ptr<int>(0); 
-    float* dists_ptr = dists.ptr<float>(0); 
-    cv::DMatch m;
-    set<int> train_ids; 
-    for(int i=0; i<indices.rows; i++){
-        float dis_factor = dists_ptr[i*2] / dists_ptr[i*2+1]; 
-        if(dis_factor < dis_ratio ){
-            int train_id = indices_ptr[i*2]; 
-            if(train_ids.count(train_id) > 0) { // already add this feature 
-                // TODO: select the best matched pair 
-                continue; 
+    if (type == "bf") {
+        BFMatcher desc_matcher(cv::NORM_L2, true);
+        desc_matcher.match(desc1, desc2, matches, Mat());
+    }
+    if (type == "knn") {
+        BFMatcher desc_matcher(cv::NORM_L2, true);
+        vector< vector<DMatch> > vmatches;
+        desc_matcher.knnMatch(desc1, desc2, vmatches, 1);
+        for (int i = 0; i < static_cast<int>(vmatches.size()); ++i) {
+            if (!vmatches[i].size()) {
+                continue;
             }
-            // add this match pair  
-            m.trainIdx = train_id; 
-            m.queryIdx = i; 
-            m.distance = dis_factor;
-            matches.push_back(m);
-            train_ids.insert(train_id); 
+            matches.push_back(vmatches[i][0]);
         }
     }
+    std::sort(matches.begin(), matches.end());
+    while (matches.front().distance * kDistanceCoef < matches.back().distance) {
+        matches.pop_back();
+    }
+    while (matches.size() > kMaxMatchingSize) {
+        matches.pop_back();
+    }
+
+
+    // int k = 2; 
+    // double sum_dis = 0;     
+    // double dis_ratio = 0.5; 
+
+    // cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
+
+    // int num_features = desc1.rows; 
+    // cv::Mat indices(num_features, k, CV_32S); 
+    // cv::Mat dists(num_features, k, CV_32F); 
+    // cv::Mat relevantDescriptors = desc1.clone(); 
+
+    // mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
+
+    // int* indices_ptr = indices.ptr<int>(0); 
+    // float* dists_ptr = dists.ptr<float>(0); 
+    // cv::DMatch m;
+    // set<int> train_ids; 
+    // for(int i=0; i<indices.rows; i++){
+    //     float dis_factor = dists_ptr[i*2] / dists_ptr[i*2+1]; 
+    //     if(dis_factor < dis_ratio ){
+    //         int train_id = indices_ptr[i*2]; 
+    //         if(train_ids.count(train_id) > 0) { // already add this feature 
+    //             // TODO: select the best matched pair 
+    //             continue; 
+    //         }
+    //         // add this match pair  
+    //         m.trainIdx = train_id; 
+    //         m.queryIdx = i; 
+    //         m.distance = dis_factor;
+    //         matches.push_back(m);
+    //         train_ids.insert(train_id); 
+    //     }
+    // }
 
 }
 
@@ -462,7 +462,7 @@ int main(int argc, char** argv)
             pts_img.clear();
             pts_obj.clear();
             vector<DMatch> gloabalMatches;
-            match("bf", descriptorsAll, descriptors2, gloabalMatches);
+            match("knn", descriptorsAll, descriptors2, gloabalMatches);
             cout<<"gloabalMatches: "<<gloabalMatches.size()<<endl;
 
 
@@ -482,17 +482,17 @@ int main(int argc, char** argv)
             cout<<"inliers: "<<inliers.rows<<endl;
 
 
-            if (count>1){
-                for (size_t i=0; i<inliers.rows; i++)
-                {
-                    int idx = inliers.ptr<int>(i)[0];
-                    keypointsAll[idx] = keypointsAll.back();
-                    keypointsAll.pop_back();
+            // if (count>1){
+            //     for (size_t i=0; i<inliers.rows; i++)
+            //     {
+            //         int idx = inliers.ptr<int>(i)[0];
+            //         keypointsAll[idx] = keypointsAll.back();
+            //         keypointsAll.pop_back();
                     
-                    pts_objAll[idx] = pts_objAll.back();
-                    pts_objAll.pop_back();
-                }
-            }
+            //         pts_objAll[idx] = pts_objAll.back();
+            //         pts_objAll.pop_back();
+            //     }
+            // }
 
 
 
@@ -532,30 +532,19 @@ int main(int argc, char** argv)
     pcl::io::savePCDFile(output_Path.c_str(), *output);
 
 
-    PointCloud::Ptr pts_objAllpcl = cvPtsToRGBPC(pts_objAll,0,255,0);
-    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/sparse.pcd", *pts_objAllpcl);
+    // PointCloud::Ptr pts_objAllpcl = cvPtsToGreenPC(pts_objAll);
+    // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/sparse.pcd", *pts_objAllpcl);
     
     // *pts_objAllpcl = *pts_objAllpcl+ *output;
     // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/sparseInPC.pcd", *pts_objAllpcl);
 
 
 /* ============================================================================== */
+    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1365.png");
+    // Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1365.png", -1);
 
-
-
-    tic();
-
-    Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/230.png");
-    Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/230.png", -1);
-
-
-
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/124.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/124.png", -1);
-
-
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/150.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/150.png", -1);
+    Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/230.png");
+    Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/230.png", -1);
     camera.fx = 530.562866;
     camera.fy = 530.562927;
 
@@ -593,7 +582,7 @@ int main(int argc, char** argv)
     pts_obj.clear();
 
     vector<DMatch> goodMatches;
-    match("bf", descriptorsAll, brief_descriptors, goodMatches);
+    match("knn", descriptorsAll, brief_descriptors, goodMatches);
     // cout<<"goodMatches: "<<goodMatches.size()<<endl;
     for (size_t i=0; i<goodMatches.size(); i++)
     {
@@ -629,15 +618,14 @@ int main(int argc, char** argv)
     tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
     cout<<"T_query="<<endl<<mat_T<<endl;
 
-    toc();
 
-    vector<cv::Point3f> pts_Tracked;
-    vector<cv::KeyPoint> keypoints2Show;
-    for (size_t i=0; i<inliers.rows; i++)
-    {
-        keypoints2Show.push_back( keypoints2[  (goodMatches[inliers.ptr<int>(i)[0]] ) .trainIdx] );
-        pts_Tracked.push_back( pts_obj[inliers.ptr<int>(i)[0]] );
-    }
+
+
+    // vector<cv::KeyPoint> keypoints2Show;
+    // for (size_t i=0; i<inliers.rows; i++)
+    // {
+    //     keypoints2Show.push_back( keypoints2[  (goodMatches[inliers.ptr<int>(i)[0]] ) .trainIdx] );
+    // }
     // cv::Mat imgShow;
     // cv::drawKeypoints( image2, keypoints2Show, imgShow, cv::Scalar::all(-1), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
     // cv::imshow( "keypoints", imgShow );
@@ -646,15 +634,11 @@ int main(int argc, char** argv)
     Eigen::Isometry3d T_eigen = cvTtoEigenT(mat_T);
 
     PointCloud::Ptr cloud2 = image2PointCloud( rgb.setTo(cv::Scalar(0,0,255)), depth, camera );
-    // pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.inverse().matrix() );
     pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.inverse().matrix() );
     *output += *cloud2;
     pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/check.pcd", *output);
 
-    PointCloud::Ptr ptsTrackPC = cvPtsToRGBPC(pts_Tracked,0,0,255);
-    *ptsTrackPC = *ptsTrackPC + *output;
-    *ptsTrackPC = *ptsTrackPC + *pts_objAllpcl;
-    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/tracked.pcd", *ptsTrackPC);
+
 
     return 0;
 }

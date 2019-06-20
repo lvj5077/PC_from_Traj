@@ -246,8 +246,9 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
+  "src/CMakeFiles/slambase.dir/DependInfo.cmake"
+  "src/CMakeFiles/sift.dir/DependInfo.cmake"
   "src/CMakeFiles/PC_from_Traj.dir/DependInfo.cmake"
   "src/CMakeFiles/testMatch.dir/DependInfo.cmake"
   "src/CMakeFiles/poseFromPC.dir/DependInfo.cmake"
-  "src/CMakeFiles/slambase.dir/DependInfo.cmake"
   )

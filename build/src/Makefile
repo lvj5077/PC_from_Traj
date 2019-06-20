@@ -111,6 +111,36 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+src/CMakeFiles/slambase.dir/rule:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/slambase.dir/rule
+.PHONY : src/CMakeFiles/slambase.dir/rule
+
+# Convenience name for target.
+slambase: src/CMakeFiles/slambase.dir/rule
+
+.PHONY : slambase
+
+# fast build rule for target.
+slambase/fast:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
+.PHONY : slambase/fast
+
+# Convenience name for target.
+src/CMakeFiles/sift.dir/rule:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/sift.dir/rule
+.PHONY : src/CMakeFiles/sift.dir/rule
+
+# Convenience name for target.
+sift: src/CMakeFiles/sift.dir/rule
+
+.PHONY : sift
+
+# fast build rule for target.
+sift/fast:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/build
+.PHONY : sift/fast
+
+# Convenience name for target.
 src/CMakeFiles/PC_from_Traj.dir/rule:
 	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/PC_from_Traj.dir/rule
 .PHONY : src/CMakeFiles/PC_from_Traj.dir/rule
@@ -154,21 +184,6 @@ poseFromPC: src/CMakeFiles/poseFromPC.dir/rule
 poseFromPC/fast:
 	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/build
 .PHONY : poseFromPC/fast
-
-# Convenience name for target.
-src/CMakeFiles/slambase.dir/rule:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/slambase.dir/rule
-.PHONY : src/CMakeFiles/slambase.dir/rule
-
-# Convenience name for target.
-slambase: src/CMakeFiles/slambase.dir/rule
-
-.PHONY : slambase
-
-# fast build rule for target.
-slambase/fast:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
-.PHONY : slambase/fast
 
 pcFromTraj.o: pcFromTraj.cpp.o
 
@@ -223,6 +238,33 @@ poseFromPC.s: poseFromPC.cpp.s
 poseFromPC.cpp.s:
 	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/poseFromPC.cpp.s
 .PHONY : poseFromPC.cpp.s
+
+sift.o: sift.cpp.o
+
+.PHONY : sift.o
+
+# target to build an object file
+sift.cpp.o:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.o
+.PHONY : sift.cpp.o
+
+sift.i: sift.cpp.i
+
+.PHONY : sift.i
+
+# target to preprocess a source file
+sift.cpp.i:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.i
+.PHONY : sift.cpp.i
+
+sift.s: sift.cpp.s
+
+.PHONY : sift.s
+
+# target to generate assembly for a file
+sift.cpp.s:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.s
+.PHONY : sift.cpp.s
 
 slamBase.o: slamBase.cpp.o
 
@@ -285,17 +327,21 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... edit_cache"
+	@echo "... slambase"
+	@echo "... sift"
 	@echo "... PC_from_Traj"
 	@echo "... testMatch"
-	@echo "... edit_cache"
 	@echo "... poseFromPC"
-	@echo "... slambase"
 	@echo "... pcFromTraj.o"
 	@echo "... pcFromTraj.i"
 	@echo "... pcFromTraj.s"
 	@echo "... poseFromPC.o"
 	@echo "... poseFromPC.i"
 	@echo "... poseFromPC.s"
+	@echo "... sift.o"
+	@echo "... sift.i"
+	@echo "... sift.s"
 	@echo "... slamBase.o"
 	@echo "... slamBase.i"
 	@echo "... slamBase.s"

@@ -54,8 +54,8 @@ void toc() {
 
 void match(string type, Mat& desc2, Mat& desc1, vector<DMatch>& matches) {
     matches.clear();
-    cout << "have trained " << desc1.rows<<endl;
-    cout << "found query " << desc2.rows<<endl;
+    cout << "have saved " << desc2.rows<<endl;
+    cout << "query " << desc1.rows<<endl;
     // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // std::vector< std::vector<DMatch> > knn_matches;
@@ -71,7 +71,7 @@ void match(string type, Mat& desc2, Mat& desc1, vector<DMatch>& matches) {
     //     }
     // }
 
-    type = "knn";
+
     if (type == "bf") {
         BFMatcher desc_matcher(cv::NORM_L2, true);
         desc_matcher.match(desc1, desc2, matches, Mat());
@@ -100,12 +100,12 @@ void match(string type, Mat& desc2, Mat& desc1, vector<DMatch>& matches) {
     // double sum_dis = 0;     
     // double dis_ratio = 0.5; 
 
-    // cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc1, cv::flann::KDTreeIndexParams()); 
+    // cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
 
-    // int num_features = desc2.rows; 
+    // int num_features = desc1.rows; 
     // cv::Mat indices(num_features, k, CV_32S); 
     // cv::Mat dists(num_features, k, CV_32F); 
-    // cv::Mat relevantDescriptors = desc2.clone(); 
+    // cv::Mat relevantDescriptors = desc1.clone(); 
 
     // mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
 
@@ -483,17 +483,17 @@ int main(int argc, char** argv)
             cout<<"inliers: "<<inliers.rows<<endl;
 
 
-            if (count>1){
-                for (size_t i=0; i<inliers.rows; i++)
-                {
-                    int idx = inliers.ptr<int>(i)[0];
-                    keypointsAll[idx] = keypointsAll.back();
-                    keypointsAll.pop_back();
+            // if (count>1){
+            //     for (size_t i=0; i<inliers.rows; i++)
+            //     {
+            //         int idx = inliers.ptr<int>(i)[0];
+            //         keypointsAll[idx] = keypointsAll.back();
+            //         keypointsAll.pop_back();
                     
-                    pts_objAll[idx] = pts_objAll.back();
-                    pts_objAll.pop_back();
-                }
-            }
+            //         pts_objAll[idx] = pts_objAll.back();
+            //         pts_objAll.pop_back();
+            //     }
+            // }
 
 
 
@@ -552,12 +552,12 @@ int main(int argc, char** argv)
 
 
 
-    Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/12.png");
-    Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/12.png", -1);
+    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/230.png");
+    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/230.png", -1);
 
 
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/150.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/150.png", -1);
+    Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/230.png");
+    Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/230.png", -1);
     camera.fx = 530.562866;
     camera.fy = 530.562927;
 
