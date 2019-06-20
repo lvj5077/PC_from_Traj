@@ -547,17 +547,17 @@ int main(int argc, char** argv)
 
     tic();
 
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/230.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/230.png", -1);
+    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1311.png");
+    // Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1311.png", -1);
 
 
 
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/124.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/124.png", -1);
+    Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/12.png");
+    Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/12.png", -1);
 
 
-    Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/150.png");
-    Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/150.png", -1);
+    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/150.png");
+    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/150.png", -1);
     camera.fx = 530.562866;
     camera.fy = 530.562927;
 
