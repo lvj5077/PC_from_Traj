@@ -52,10 +52,10 @@ void toc() {
     tictoc_stack.pop();
 }
 
-void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
+void match(string type, Mat& desc2, Mat& desc1, vector<DMatch>& matches) {
     matches.clear();
-    cout << "have desc1 " << desc1.rows<<endl;
-    cout << "found desc2 " << desc2.rows<<endl;
+    cout << "have saved " << desc2.rows<<endl;
+    cout << "query " << desc1.rows<<endl;
     // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // // Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create(DescriptorMatcher::FLANNBASED);
     // std::vector< std::vector<DMatch> > knn_matches;
@@ -72,63 +72,63 @@ void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
     // }
 
 
-    // if (type == "bf") {
-    //     BFMatcher desc_matcher(cv::NORM_L2, true);
-    //     desc_matcher.match(desc1, desc2, matches, Mat());
-    // }
-    // if (type == "knn") {
-    //     BFMatcher desc_matcher(cv::NORM_L2, true);
-    //     vector< vector<DMatch> > vmatches;
-    //     desc_matcher.knnMatch(desc1, desc2, vmatches, 1);
-    //     for (int i = 0; i < static_cast<int>(vmatches.size()); ++i) {
-    //         if (!vmatches[i].size()) {
-    //             continue;
-    //         }
-    //         matches.push_back(vmatches[i][0]);
-    //     }
-    // }
-    // std::sort(matches.begin(), matches.end());
-    // while (matches.front().distance * kDistanceCoef < matches.back().distance) {
-    //     matches.pop_back();
-    // }
-    // while (matches.size() > kMaxMatchingSize) {
-    //     matches.pop_back();
-    // }
-
-
-    int k = 2; 
-    double sum_dis = 0;     
-    double dis_ratio = 0.5; 
-
-    cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
-
-    int num_features = desc1.rows; 
-    cv::Mat indices(num_features, k, CV_32S); 
-    cv::Mat dists(num_features, k, CV_32F); 
-    cv::Mat relevantDescriptors = desc1.clone(); 
-
-    mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
-
-    int* indices_ptr = indices.ptr<int>(0); 
-    float* dists_ptr = dists.ptr<float>(0); 
-    cv::DMatch m;
-    set<int> train_ids; 
-    for(int i=0; i<indices.rows; i++){
-        float dis_factor = dists_ptr[i*2] / dists_ptr[i*2+1]; 
-        if(dis_factor < dis_ratio ){
-            int train_id = indices_ptr[i*2]; 
-            if(train_ids.count(train_id) > 0) { // already add this feature 
-                // TODO: select the best matched pair 
-                continue; 
+    if (type == "bf") {
+        BFMatcher desc_matcher(cv::NORM_L2, true);
+        desc_matcher.match(desc1, desc2, matches, Mat());
+    }
+    if (type == "knn") {
+        BFMatcher desc_matcher(cv::NORM_L2, true);
+        vector< vector<DMatch> > vmatches;
+        desc_matcher.knnMatch(desc1, desc2, vmatches, 1);
+        for (int i = 0; i < static_cast<int>(vmatches.size()); ++i) {
+            if (!vmatches[i].size()) {
+                continue;
             }
-            // add this match pair  
-            m.trainIdx = train_id; 
-            m.queryIdx = i; 
-            m.distance = dis_factor;
-            matches.push_back(m);
-            train_ids.insert(train_id); 
+            matches.push_back(vmatches[i][0]);
         }
     }
+    std::sort(matches.begin(), matches.end());
+    while (matches.front().distance * kDistanceCoef < matches.back().distance) {
+        matches.pop_back();
+    }
+    while (matches.size() > kMaxMatchingSize) {
+        matches.pop_back();
+    }
+
+
+    // int k = 2; 
+    // double sum_dis = 0;     
+    // double dis_ratio = 0.5; 
+
+    // cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
+
+    // int num_features = desc1.rows; 
+    // cv::Mat indices(num_features, k, CV_32S); 
+    // cv::Mat dists(num_features, k, CV_32F); 
+    // cv::Mat relevantDescriptors = desc1.clone(); 
+
+    // mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
+
+    // int* indices_ptr = indices.ptr<int>(0); 
+    // float* dists_ptr = dists.ptr<float>(0); 
+    // cv::DMatch m;
+    // set<int> train_ids; 
+    // for(int i=0; i<indices.rows; i++){
+    //     float dis_factor = dists_ptr[i*2] / dists_ptr[i*2+1]; 
+    //     if(dis_factor < dis_ratio ){
+    //         int train_id = indices_ptr[i*2]; 
+    //         if(train_ids.count(train_id) > 0) { // already add this feature 
+    //             // TODO: select the best matched pair 
+    //             continue; 
+    //         }
+    //         // add this match pair  
+    //         m.trainIdx = train_id; 
+    //         m.queryIdx = i; 
+    //         m.distance = dis_factor;
+    //         matches.push_back(m);
+    //         train_ids.insert(train_id); 
+    //     }
+    // }
 
 }
 
@@ -214,12 +214,12 @@ int main(int argc, char** argv)
     for (size_t i=0; i<goodMatches.size(); i++)
     {
         // query 是第一个, train 是第二个
-        cv::Point2f p = kp1[goodMatches[i].queryIdx].pt;
+        cv::Point2f p = kp1[goodMatches[i].trainIdx].pt;
         // 获取d是要小心！x是向右的，y是向下的，所以y才是行，x是列！
         ushort d = depth1.ptr<ushort>( int(p.y) )[ int(p.x) ];
         if (d == 0)
             continue;
-        pts_img.push_back( cv::Point2f( kp2[goodMatches[i].trainIdx].pt ) );
+        pts_img.push_back( cv::Point2f( kp2[goodMatches[i].queryIdx].pt ) );
 
         // 将(u,v,d)转成(x,y,z)
         cv::Point3f pt ( p.x, p.y, d );
@@ -246,15 +246,15 @@ int main(int argc, char** argv)
     cout<<"R="<<rvec<<endl;
     cout<<"t="<<tvec<<endl;
 
-    // 画出inliers匹配 
-    vector< cv::DMatch > matchesShow;
-    for (size_t i=0; i<inliers.rows; i++)
-    {
-        matchesShow.push_back( goodMatches[inliers.ptr<int>(i)[0]] );    
-    }
-    cv::drawMatches( gray1, kp1, gray2, kp2, matchesShow, imgMatches );
-    cv::imshow( "inlier matches", imgMatches );
-    cv::waitKey( 0 );
+    // // 画出inliers匹配 
+    // vector< cv::DMatch > matchesShow;
+    // for (size_t i=0; i<inliers.rows; i++)
+    // {
+    //     matchesShow.push_back( goodMatches[inliers.ptr<int>(i)[0]] );    
+    // }
+    // cv::drawMatches( gray1, kp1, gray2, kp2, matchesShow, imgMatches );
+    // cv::imshow( "inlier matches", imgMatches );
+    // cv::waitKey( 0 );
 
 
     Mat mat_T = cv::Mat::eye(4,4,CV_64F);
