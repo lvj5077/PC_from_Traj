@@ -100,12 +100,12 @@ void match(string type, Mat& desc2, Mat& desc1, vector<DMatch>& matches) {
     // double sum_dis = 0;     
     // double dis_ratio = 0.5; 
 
-    // cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
+    // cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc1, cv::flann::KDTreeIndexParams()); 
 
-    // int num_features = desc1.rows; 
+    // int num_features = desc2.rows; 
     // cv::Mat indices(num_features, k, CV_32S); 
     // cv::Mat dists(num_features, k, CV_32F); 
-    // cv::Mat relevantDescriptors = desc1.clone(); 
+    // cv::Mat relevantDescriptors = desc2.clone(); 
 
     // mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
 
@@ -219,10 +219,10 @@ int main(int argc, char** argv)
     bool useFast = true;
     if(useFast){
         tic();
-        cv::FAST(image, keypoints, fast_th, true);
-        brief->compute(image, keypoints, brief_descriptors); 
-        // sift->detect ( image,keypoints );
-        // sift->compute ( image, keypoints, brief_descriptors );
+        // cv::FAST(image, keypoints, fast_th, true);
+        // brief->compute(image, keypoints, brief_descriptors); 
+        sift->detect ( image,keypoints );
+        sift->compute ( image, keypoints, brief_descriptors );
         // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
         toc();
     }
@@ -275,7 +275,7 @@ int main(int argc, char** argv)
 
     Mat currT = cv::Mat::eye(4,4,CV_64F);
     // pcl::visualization::CloudViewer viewer( "viewer" );
-    while(!input.eof() && count<20)
+    while(!input.eof() && count<1380)
     {
         res++;
         count ++;
@@ -327,11 +327,11 @@ int main(int argc, char** argv)
             
             if(useFast){
                 tic();
-                cv::FAST(image, keypoints, fast_th, true);
-                brief->compute(image, keypoints, brief_descriptors); 
+                // cv::FAST(image, keypoints, fast_th, true);
+                // brief->compute(image, keypoints, brief_descriptors); 
 
-                // sift->detect ( image,keypoints );
-                // sift->compute ( image, keypoints, brief_descriptors );
+                sift->detect ( image,keypoints );
+                sift->compute ( image, keypoints, brief_descriptors );
 
                 // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
                 toc();
@@ -383,8 +383,8 @@ int main(int argc, char** argv)
                 keypointsAll.push_back(keypoints[i]);
                 pts_objAll.push_back( projPd );
             }
-            // sift->compute ( image, keypointsAll, descriptorsAll );
-            brief->compute ( image, keypointsAll, descriptorsAll );
+            sift->compute ( image, keypointsAll, descriptorsAll );
+            // brief->compute ( image, keypointsAll, descriptorsAll );
 
 
 
@@ -503,6 +503,7 @@ int main(int argc, char** argv)
             Rodrigues(rvec, mat_r);
             mat_r.copyTo(mat_T(cv::Rect(0, 0, 3, 3)));
             tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
+            mat_T = mat_T.inv();
             cout<<"T_globalMatch="<<endl<<mat_T<<endl;
 
             // cv::Mat imgShow;
@@ -565,11 +566,11 @@ int main(int argc, char** argv)
             
     if(useFast){
         tic();
-        cv::FAST(image, keypoints, fast_th, true);
-        brief->compute(image, keypoints, brief_descriptors); 
+        // cv::FAST(image, keypoints, fast_th, true);
+        // brief->compute(image, keypoints, brief_descriptors); 
 
-        // sift->detect ( gray,keypoints );
-        // sift->compute ( gray, keypoints, brief_descriptors );
+        sift->detect ( gray,keypoints );
+        sift->compute ( gray, keypoints, brief_descriptors );
 
         // sift->detectAndCompute(image, Mat(), keypoints, brief_descriptors);
         toc();
@@ -628,6 +629,7 @@ int main(int argc, char** argv)
     Rodrigues(rvec, mat_r);
     mat_r.copyTo(mat_T(cv::Rect(0, 0, 3, 3)));
     tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
+    mat_T = mat_T.inv();
     cout<<"T_query="<<endl<<mat_T<<endl;
 
     toc();
@@ -647,8 +649,8 @@ int main(int argc, char** argv)
     Eigen::Isometry3d T_eigen = cvTtoEigenT(mat_T);
 
     PointCloud::Ptr cloud2 = image2PointCloud( rgb.setTo(cv::Scalar(0,0,255)), depth, camera );
-    pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.inverse().matrix() );
-    // pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.matrix() );
+    // pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.inverse().matrix() );
+    pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.matrix() );
     *output += *cloud2;
     pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/check.pcd", *output);
 

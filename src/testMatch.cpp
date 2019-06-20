@@ -263,6 +263,7 @@ int main(int argc, char** argv)
     mat_r.copyTo(mat_T(cv::Rect(0, 0, 3, 3)));
     tvec.copyTo(mat_T(cv::Rect(3, 0, 1, 3)));
 
+    mat_T = mat_T.inv();
     Eigen::Isometry3d T_eigen = cvTtoEigenT(mat_T);
 
 
@@ -271,7 +272,7 @@ int main(int argc, char** argv)
 
 
     // pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.inverse().matrix() );
-    pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.inverse().matrix() );
+    pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.matrix() );
     *cloud1 += *cloud2;
     pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/match.pcd", *cloud1);
 
