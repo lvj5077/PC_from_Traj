@@ -72,63 +72,63 @@ void match(string type, Mat& desc1, Mat& desc2, vector<DMatch>& matches) {
     // }
 
 
-    if (type == "bf") {
-        BFMatcher desc_matcher(cv::NORM_L2, true);
-        desc_matcher.match(desc1, desc2, matches, Mat());
-    }
-    if (type == "knn") {
-        BFMatcher desc_matcher(cv::NORM_L2, true);
-        vector< vector<DMatch> > vmatches;
-        desc_matcher.knnMatch(desc1, desc2, vmatches, 1);
-        for (int i = 0; i < static_cast<int>(vmatches.size()); ++i) {
-            if (!vmatches[i].size()) {
-                continue;
-            }
-            matches.push_back(vmatches[i][0]);
-        }
-    }
-    std::sort(matches.begin(), matches.end());
-    while (matches.front().distance * kDistanceCoef < matches.back().distance) {
-        matches.pop_back();
-    }
-    while (matches.size() > kMaxMatchingSize) {
-        matches.pop_back();
-    }
-
-
-    // int k = 2; 
-    // double sum_dis = 0;     
-    // double dis_ratio = 0.5; 
-
-    // cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
-
-    // int num_features = desc1.rows; 
-    // cv::Mat indices(num_features, k, CV_32S); 
-    // cv::Mat dists(num_features, k, CV_32F); 
-    // cv::Mat relevantDescriptors = desc1.clone(); 
-
-    // mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
-
-    // int* indices_ptr = indices.ptr<int>(0); 
-    // float* dists_ptr = dists.ptr<float>(0); 
-    // cv::DMatch m;
-    // set<int> train_ids; 
-    // for(int i=0; i<indices.rows; i++){
-    //     float dis_factor = dists_ptr[i*2] / dists_ptr[i*2+1]; 
-    //     if(dis_factor < dis_ratio ){
-    //         int train_id = indices_ptr[i*2]; 
-    //         if(train_ids.count(train_id) > 0) { // already add this feature 
-    //             // TODO: select the best matched pair 
-    //             continue; 
+    // if (type == "bf") {
+    //     BFMatcher desc_matcher(cv::NORM_L2, true);
+    //     desc_matcher.match(desc1, desc2, matches, Mat());
+    // }
+    // if (type == "knn") {
+    //     BFMatcher desc_matcher(cv::NORM_L2, true);
+    //     vector< vector<DMatch> > vmatches;
+    //     desc_matcher.knnMatch(desc1, desc2, vmatches, 1);
+    //     for (int i = 0; i < static_cast<int>(vmatches.size()); ++i) {
+    //         if (!vmatches[i].size()) {
+    //             continue;
     //         }
-    //         // add this match pair  
-    //         m.trainIdx = train_id; 
-    //         m.queryIdx = i; 
-    //         m.distance = dis_factor;
-    //         matches.push_back(m);
-    //         train_ids.insert(train_id); 
+    //         matches.push_back(vmatches[i][0]);
     //     }
     // }
+    // std::sort(matches.begin(), matches.end());
+    // while (matches.front().distance * kDistanceCoef < matches.back().distance) {
+    //     matches.pop_back();
+    // }
+    // while (matches.size() > kMaxMatchingSize) {
+    //     matches.pop_back();
+    // }
+
+
+    int k = 2; 
+    double sum_dis = 0;     
+    double dis_ratio = 0.5; 
+
+    cv::flann::Index* mpFlannIndex = new cv::flann::Index(desc2, cv::flann::KDTreeIndexParams()); 
+
+    int num_features = desc1.rows; 
+    cv::Mat indices(num_features, k, CV_32S); 
+    cv::Mat dists(num_features, k, CV_32F); 
+    cv::Mat relevantDescriptors = desc1.clone(); 
+
+    mpFlannIndex->knnSearch(relevantDescriptors, indices, dists, k, flann::SearchParams(16) ); 
+
+    int* indices_ptr = indices.ptr<int>(0); 
+    float* dists_ptr = dists.ptr<float>(0); 
+    cv::DMatch m;
+    set<int> train_ids; 
+    for(int i=0; i<indices.rows; i++){
+        float dis_factor = dists_ptr[i*2] / dists_ptr[i*2+1]; 
+        if(dis_factor < dis_ratio ){
+            int train_id = indices_ptr[i*2]; 
+            if(train_ids.count(train_id) > 0) { // already add this feature 
+                // TODO: select the best matched pair 
+                continue; 
+            }
+            // add this match pair  
+            m.trainIdx = train_id; 
+            m.queryIdx = i; 
+            m.distance = dis_factor;
+            matches.push_back(m);
+            train_ids.insert(train_id); 
+        }
+    }
 
 }
 
@@ -482,17 +482,17 @@ int main(int argc, char** argv)
             cout<<"inliers: "<<inliers.rows<<endl;
 
 
-            if (count>1){
-                for (size_t i=0; i<inliers.rows; i++)
-                {
-                    int idx = inliers.ptr<int>(i)[0];
-                    keypointsAll[idx] = keypointsAll.back();
-                    keypointsAll.pop_back();
+            // if (count>1){
+            //     for (size_t i=0; i<inliers.rows; i++)
+            //     {
+            //         int idx = inliers.ptr<int>(i)[0];
+            //         keypointsAll[idx] = keypointsAll.back();
+            //         keypointsAll.pop_back();
                     
-                    pts_objAll[idx] = pts_objAll.back();
-                    pts_objAll.pop_back();
-                }
-            }
+            //         pts_objAll[idx] = pts_objAll.back();
+            //         pts_objAll.pop_back();
+            //     }
+            // }
 
 
 
@@ -540,19 +540,24 @@ int main(int argc, char** argv)
 
 
 /* ============================================================================== */
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1365.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1365.png", -1);
 
 
 
-    Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/124.png");
-    Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/124.png", -1);
+
+
+    Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/230.png");
+    Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/230.png", -1);
+
+
+
+    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/124.png");
+    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/124.png", -1);
 
 
     // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/150.png");
     // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/150.png", -1);
-    camera.fx = 531.577087;
-    camera.fy = 531.577148;
+    camera.fx = 530.562866;
+    camera.fy = 530.562927;
 
     Mat gray;
     cvtColor( rgb, gray, CV_BGR2GRAY );

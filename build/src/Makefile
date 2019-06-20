@@ -111,21 +111,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-src/CMakeFiles/poseFromPC.dir/rule:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/poseFromPC.dir/rule
-.PHONY : src/CMakeFiles/poseFromPC.dir/rule
-
-# Convenience name for target.
-poseFromPC: src/CMakeFiles/poseFromPC.dir/rule
-
-.PHONY : poseFromPC
-
-# fast build rule for target.
-poseFromPC/fast:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/build
-.PHONY : poseFromPC/fast
-
-# Convenience name for target.
 src/CMakeFiles/PC_from_Traj.dir/rule:
 	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/PC_from_Traj.dir/rule
 .PHONY : src/CMakeFiles/PC_from_Traj.dir/rule
@@ -139,6 +124,36 @@ PC_from_Traj: src/CMakeFiles/PC_from_Traj.dir/rule
 PC_from_Traj/fast:
 	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/build
 .PHONY : PC_from_Traj/fast
+
+# Convenience name for target.
+src/CMakeFiles/testMatch.dir/rule:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/testMatch.dir/rule
+.PHONY : src/CMakeFiles/testMatch.dir/rule
+
+# Convenience name for target.
+testMatch: src/CMakeFiles/testMatch.dir/rule
+
+.PHONY : testMatch
+
+# fast build rule for target.
+testMatch/fast:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/build
+.PHONY : testMatch/fast
+
+# Convenience name for target.
+src/CMakeFiles/poseFromPC.dir/rule:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/poseFromPC.dir/rule
+.PHONY : src/CMakeFiles/poseFromPC.dir/rule
+
+# Convenience name for target.
+poseFromPC: src/CMakeFiles/poseFromPC.dir/rule
+
+.PHONY : poseFromPC
+
+# fast build rule for target.
+poseFromPC/fast:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/build
+.PHONY : poseFromPC/fast
 
 # Convenience name for target.
 src/CMakeFiles/slambase.dir/rule:
@@ -236,6 +251,33 @@ slamBase.cpp.s:
 	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.s
 .PHONY : slamBase.cpp.s
 
+testMatch.o: testMatch.cpp.o
+
+.PHONY : testMatch.o
+
+# target to build an object file
+testMatch.cpp.o:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.o
+.PHONY : testMatch.cpp.o
+
+testMatch.i: testMatch.cpp.i
+
+.PHONY : testMatch.i
+
+# target to preprocess a source file
+testMatch.cpp.i:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.i
+.PHONY : testMatch.cpp.i
+
+testMatch.s: testMatch.cpp.s
+
+.PHONY : testMatch.s
+
+# target to generate assembly for a file
+testMatch.cpp.s:
+	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.s
+.PHONY : testMatch.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -243,9 +285,10 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... PC_from_Traj"
+	@echo "... testMatch"
 	@echo "... edit_cache"
 	@echo "... poseFromPC"
-	@echo "... PC_from_Traj"
 	@echo "... slambase"
 	@echo "... pcFromTraj.o"
 	@echo "... pcFromTraj.i"
@@ -256,6 +299,9 @@ help:
 	@echo "... slamBase.o"
 	@echo "... slamBase.i"
 	@echo "... slamBase.s"
+	@echo "... testMatch.o"
+	@echo "... testMatch.i"
+	@echo "... testMatch.s"
 .PHONY : help
 
 

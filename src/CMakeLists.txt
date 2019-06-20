@@ -32,3 +32,9 @@ TARGET_LINK_LIBRARIES( poseFromPC
     slambase
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES} )
+
+ADD_EXECUTABLE( testMatch testMatch.cpp)
+TARGET_LINK_LIBRARIES( testMatch
+    slambase
+    ${OpenCV_LIBS} 
+    ${PCL_LIBRARIES} )
