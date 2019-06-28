@@ -46,11 +46,11 @@ pcl/common/transforms.h
 pcl/filters/voxel_grid.h
 -
 
-/Users/lingqiujin/work/PC_from_Traj/src/pcFromTraj.cpp
+/Users/jin/work/PC_from_Traj/src/pcFromTraj.cpp
 slamBase.h
-/Users/lingqiujin/work/PC_from_Traj/src/slamBase.h
+/Users/jin/work/PC_from_Traj/src/slamBase.h
 loadImage.h
-/Users/lingqiujin/work/PC_from_Traj/src/loadImage.h
+/Users/jin/work/PC_from_Traj/src/loadImage.h
 opencv2/core/eigen.hpp
 -
 pcl/common/transforms.h

@@ -39,19 +39,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /usr/local/Cellar/cmake/3.14.4/bin/cmake
+CMAKE_COMMAND = /usr/local/Cellar/cmake/3.14.5/bin/cmake
 
 # The command to remove a file.
-RM = /usr/local/Cellar/cmake/3.14.4/bin/cmake -E remove -f
+RM = /usr/local/Cellar/cmake/3.14.5/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/lingqiujin/work/PC_from_Traj
+CMAKE_SOURCE_DIR = /Users/jin/work/PC_from_Traj
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/lingqiujin/work/PC_from_Traj/build
+CMAKE_BINARY_DIR = /Users/jin/work/PC_from_Traj/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /Users/lingqiujin/work/PC_from_Traj/build
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/local/Cellar/cmake/3.14.4/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/Cellar/cmake/3.14.5/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/local/Cellar/cmake/3.14.4/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	/usr/local/Cellar/cmake/3.14.5/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/lingqiujin/work/PC_from_Traj/build/CMakeFiles /Users/lingqiujin/work/PC_from_Traj/build/src/CMakeFiles/progress.marks
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/lingqiujin/work/PC_from_Traj/build/CMakeFiles 0
+	cd /Users/jin/work/PC_from_Traj/build && $(CMAKE_COMMAND) -E cmake_progress_start /Users/jin/work/PC_from_Traj/build/CMakeFiles /Users/jin/work/PC_from_Traj/build/src/CMakeFiles/progress.marks
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/jin/work/PC_from_Traj/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,22 +97,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /Users/jin/work/PC_from_Traj/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/slambase.dir/rule:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/slambase.dir/rule
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/slambase.dir/rule
 .PHONY : src/CMakeFiles/slambase.dir/rule
 
 # Convenience name for target.
@@ -122,12 +122,12 @@ slambase: src/CMakeFiles/slambase.dir/rule
 
 # fast build rule for target.
 slambase/fast:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
 .PHONY : slambase/fast
 
 # Convenience name for target.
 src/CMakeFiles/sift.dir/rule:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/sift.dir/rule
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/sift.dir/rule
 .PHONY : src/CMakeFiles/sift.dir/rule
 
 # Convenience name for target.
@@ -137,12 +137,12 @@ sift: src/CMakeFiles/sift.dir/rule
 
 # fast build rule for target.
 sift/fast:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/build
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/build
 .PHONY : sift/fast
 
 # Convenience name for target.
 src/CMakeFiles/PC_from_Traj.dir/rule:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/PC_from_Traj.dir/rule
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/PC_from_Traj.dir/rule
 .PHONY : src/CMakeFiles/PC_from_Traj.dir/rule
 
 # Convenience name for target.
@@ -152,12 +152,12 @@ PC_from_Traj: src/CMakeFiles/PC_from_Traj.dir/rule
 
 # fast build rule for target.
 PC_from_Traj/fast:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/build
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/build
 .PHONY : PC_from_Traj/fast
 
 # Convenience name for target.
 src/CMakeFiles/testMatch.dir/rule:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/testMatch.dir/rule
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/testMatch.dir/rule
 .PHONY : src/CMakeFiles/testMatch.dir/rule
 
 # Convenience name for target.
@@ -167,12 +167,12 @@ testMatch: src/CMakeFiles/testMatch.dir/rule
 
 # fast build rule for target.
 testMatch/fast:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/build
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/build
 .PHONY : testMatch/fast
 
 # Convenience name for target.
 src/CMakeFiles/poseFromPC.dir/rule:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/poseFromPC.dir/rule
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/poseFromPC.dir/rule
 .PHONY : src/CMakeFiles/poseFromPC.dir/rule
 
 # Convenience name for target.
@@ -182,7 +182,7 @@ poseFromPC: src/CMakeFiles/poseFromPC.dir/rule
 
 # fast build rule for target.
 poseFromPC/fast:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/build
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/build
 .PHONY : poseFromPC/fast
 
 pcFromTraj.o: pcFromTraj.cpp.o
@@ -191,7 +191,7 @@ pcFromTraj.o: pcFromTraj.cpp.o
 
 # target to build an object file
 pcFromTraj.cpp.o:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.o
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.o
 .PHONY : pcFromTraj.cpp.o
 
 pcFromTraj.i: pcFromTraj.cpp.i
@@ -200,7 +200,7 @@ pcFromTraj.i: pcFromTraj.cpp.i
 
 # target to preprocess a source file
 pcFromTraj.cpp.i:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.i
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.i
 .PHONY : pcFromTraj.cpp.i
 
 pcFromTraj.s: pcFromTraj.cpp.s
@@ -209,7 +209,7 @@ pcFromTraj.s: pcFromTraj.cpp.s
 
 # target to generate assembly for a file
 pcFromTraj.cpp.s:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.s
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/PC_from_Traj.dir/build.make src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.s
 .PHONY : pcFromTraj.cpp.s
 
 poseFromPC.o: poseFromPC.cpp.o
@@ -218,7 +218,7 @@ poseFromPC.o: poseFromPC.cpp.o
 
 # target to build an object file
 poseFromPC.cpp.o:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/poseFromPC.cpp.o
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/poseFromPC.cpp.o
 .PHONY : poseFromPC.cpp.o
 
 poseFromPC.i: poseFromPC.cpp.i
@@ -227,7 +227,7 @@ poseFromPC.i: poseFromPC.cpp.i
 
 # target to preprocess a source file
 poseFromPC.cpp.i:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/poseFromPC.cpp.i
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/poseFromPC.cpp.i
 .PHONY : poseFromPC.cpp.i
 
 poseFromPC.s: poseFromPC.cpp.s
@@ -236,7 +236,7 @@ poseFromPC.s: poseFromPC.cpp.s
 
 # target to generate assembly for a file
 poseFromPC.cpp.s:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/poseFromPC.cpp.s
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/poseFromPC.cpp.s
 .PHONY : poseFromPC.cpp.s
 
 sift.o: sift.cpp.o
@@ -245,7 +245,7 @@ sift.o: sift.cpp.o
 
 # target to build an object file
 sift.cpp.o:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.o
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.o
 .PHONY : sift.cpp.o
 
 sift.i: sift.cpp.i
@@ -254,7 +254,7 @@ sift.i: sift.cpp.i
 
 # target to preprocess a source file
 sift.cpp.i:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.i
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.i
 .PHONY : sift.cpp.i
 
 sift.s: sift.cpp.s
@@ -263,7 +263,7 @@ sift.s: sift.cpp.s
 
 # target to generate assembly for a file
 sift.cpp.s:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.s
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/sift.cpp.s
 .PHONY : sift.cpp.s
 
 slamBase.o: slamBase.cpp.o
@@ -272,7 +272,7 @@ slamBase.o: slamBase.cpp.o
 
 # target to build an object file
 slamBase.cpp.o:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.o
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.o
 .PHONY : slamBase.cpp.o
 
 slamBase.i: slamBase.cpp.i
@@ -281,7 +281,7 @@ slamBase.i: slamBase.cpp.i
 
 # target to preprocess a source file
 slamBase.cpp.i:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.i
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.i
 .PHONY : slamBase.cpp.i
 
 slamBase.s: slamBase.cpp.s
@@ -290,7 +290,7 @@ slamBase.s: slamBase.cpp.s
 
 # target to generate assembly for a file
 slamBase.cpp.s:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.s
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.s
 .PHONY : slamBase.cpp.s
 
 testMatch.o: testMatch.cpp.o
@@ -299,7 +299,7 @@ testMatch.o: testMatch.cpp.o
 
 # target to build an object file
 testMatch.cpp.o:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.o
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.o
 .PHONY : testMatch.cpp.o
 
 testMatch.i: testMatch.cpp.i
@@ -308,7 +308,7 @@ testMatch.i: testMatch.cpp.i
 
 # target to preprocess a source file
 testMatch.cpp.i:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.i
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.i
 .PHONY : testMatch.cpp.i
 
 testMatch.s: testMatch.cpp.s
@@ -317,7 +317,7 @@ testMatch.s: testMatch.cpp.s
 
 # target to generate assembly for a file
 testMatch.cpp.s:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.s
+	cd /Users/jin/work/PC_from_Traj/build && $(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/testMatch.cpp.s
 .PHONY : testMatch.cpp.s
 
 # Help Target
@@ -359,6 +359,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /Users/lingqiujin/work/PC_from_Traj/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /Users/jin/work/PC_from_Traj/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

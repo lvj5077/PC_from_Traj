@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/lingqiujin/work/PC_from_Traj/src/pcFromTraj.cpp" "/Users/lingqiujin/work/PC_from_Traj/build/src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.o"
+  "/Users/jin/work/PC_from_Traj/src/pcFromTraj.cpp" "/Users/jin/work/PC_from_Traj/build/src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "Clang")
 
@@ -56,7 +56,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/Users/lingqiujin/work/PC_from_Traj/build/src/CMakeFiles/slambase.dir/DependInfo.cmake"
+  "/Users/jin/work/PC_from_Traj/build/src/CMakeFiles/slambase.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

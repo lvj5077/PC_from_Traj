@@ -3,7 +3,7 @@
 
 src/CMakeFiles/slambase.dir/slamBase.cpp.o
  ../include/slamBase.h
- /Users/lingqiujin/work/PC_from_Traj/src/slamBase.cpp
+ /Users/jin/work/PC_from_Traj/src/slamBase.cpp
  /usr/local/Cellar/opencv@3/3.4.5_2/include/opencv/cxcore.h
  /usr/local/Cellar/opencv@3/3.4.5_2/include/opencv2/calib3d.hpp
  /usr/local/Cellar/opencv@3/3.4.5_2/include/opencv2/calib3d/calib3d.hpp

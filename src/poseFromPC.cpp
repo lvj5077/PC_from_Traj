@@ -513,6 +513,14 @@ int main(int argc, char** argv)
                     pts_objAll[idx] = pts_objAll.back();
                     pts_objAll.pop_back();
                 }
+
+                if(useFast){
+                    brief->compute ( image, keypointsAll, descriptorsAll );
+                }
+                else{
+                    sift->compute ( image, keypointsAll, descriptorsAll );
+                }
+
             }
 
 
@@ -551,7 +559,7 @@ int main(int argc, char** argv)
 
         }
     }
-    pcl::io::savePCDFile(output_Path.c_str(), *output);
+    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/denseMap.pcd", *output);
 
 
     PointCloud::Ptr pts_objAllpcl = cvPtsToRGBPC(pts_objAll,0,255,0);
@@ -559,8 +567,48 @@ int main(int argc, char** argv)
     
     // *pts_objAllpcl = *pts_objAllpcl+ *output;
     // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/sparseInPC.pcd", *pts_objAllpcl);
+    ofstream outputXYZ;
+    outputXYZ.open ("/Users/lingqiujin/work/PC_from_Traj/pcXYZ.txt");
+    for (size_t i=0; i<pts_objAll.size(); i++)
+    {
+        outputXYZ << setprecision(12)<< pts_objAll[i].x << " "<< setprecision(12) << pts_objAll[i].y<<" "<< setprecision(12)<< pts_objAll[i].z<<"\n";
+    }
+    outputXYZ.close();
 
 
+    cv::FileStorage outDesp("/Users/lingqiujin/work/PC_from_Traj/desp.yml", cv::FileStorage::WRITE); // create FileStorage object
+    outDesp << "descriptorsAll" << descriptorsAll; // command to save the data
+    outDesp.release();
+
+
+
+    descriptorsAll.release();
+    FileStorage inDesp;
+    inDesp.open("/Users/lingqiujin/work/PC_from_Traj/desp.yml", FileStorage::READ); 
+    inDesp["descriptorsAll"]>> descriptorsAll; 
+    inDesp.release();
+
+    ifstream inputXYZ("/Users/lingqiujin/work/PC_from_Traj/pcXYZ.txt");
+
+    // cout << pts_objAll <<endl;
+    // cout << "================================================" <<endl;
+    // cout << "================================================" <<endl;
+    // vector<cv::Point3f> pts_objAll_bkp = pts_objAll;
+    pts_objAll.clear();
+    // int mypt = 0;
+    while(!inputXYZ.eof())
+    {
+        cv::Point3f pd;
+        inputXYZ>> pd.x >> pd.y >> pd.z;
+        pts_objAll.push_back(pd);
+        // cout << pd<<"====="<<pts_objAll_bkp[mypt]<<endl;
+        // mypt++;
+    }
+    pts_objAll.pop_back();
+    // cout << pts_objAll <<endl;
+    // cout << "================================================" <<endl<<endl;
+    // pts_objAll.clear();
+    // pts_objAll = pts_objAll_bkp;
 /* ============================================================================== */
 
 
@@ -658,7 +706,7 @@ int main(int argc, char** argv)
     // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/pts_obj.pcd", *pts_objPC);
 
 
-    cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 3.0, 0.99, inliers );
+    cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 5.0, 0.95, inliers );
 
     toc();
     toc();

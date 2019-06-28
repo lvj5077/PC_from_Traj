@@ -1,4 +1,4 @@
-# Install script for directory: /Users/lingqiujin/work/PC_from_Traj/src
+# Install script for directory: /Users/jin/work/PC_from_Traj/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

@@ -38,9 +38,9 @@ pcl/common/transforms.h
 pcl/filters/voxel_grid.h
 -
 
-/Users/lingqiujin/work/PC_from_Traj/src/slamBase.cpp
+/Users/jin/work/PC_from_Traj/src/slamBase.cpp
 slamBase.h
-/Users/lingqiujin/work/PC_from_Traj/src/slamBase.h
+/Users/jin/work/PC_from_Traj/src/slamBase.h
 pcl/filters/voxel_grid.h
 -
 

@@ -4,7 +4,7 @@
 src/CMakeFiles/PC_from_Traj.dir/pcFromTraj.cpp.o
  ../include/loadImage.h
  ../include/slamBase.h
- /Users/lingqiujin/work/PC_from_Traj/src/pcFromTraj.cpp
+ /Users/jin/work/PC_from_Traj/src/pcFromTraj.cpp
  /usr/local/Cellar/opencv@3/3.4.5_2/include/opencv/cxcore.h
  /usr/local/Cellar/opencv@3/3.4.5_2/include/opencv2/calib3d.hpp
  /usr/local/Cellar/opencv@3/3.4.5_2/include/opencv2/calib3d/calib3d.hpp
