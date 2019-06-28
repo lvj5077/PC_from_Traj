@@ -111,30 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named slambase
+# Target rules for targets named poseFromPC
 
 # Build rule for target.
-slambase: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 slambase
-.PHONY : slambase
+poseFromPC: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 poseFromPC
+.PHONY : poseFromPC
 
 # fast build rule for target.
-slambase/fast:
-	$(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
-.PHONY : slambase/fast
-
-#=============================================================================
-# Target rules for targets named sift
-
-# Build rule for target.
-sift: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sift
-.PHONY : sift
-
-# fast build rule for target.
-sift/fast:
-	$(MAKE) -f src/CMakeFiles/sift.dir/build.make src/CMakeFiles/sift.dir/build
-.PHONY : sift/fast
+poseFromPC/fast:
+	$(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/build
+.PHONY : poseFromPC/fast
 
 #=============================================================================
 # Target rules for targets named PC_from_Traj
@@ -150,30 +137,30 @@ PC_from_Traj/fast:
 .PHONY : PC_from_Traj/fast
 
 #=============================================================================
-# Target rules for targets named testMatch
+# Target rules for targets named poseFromLoad
 
 # Build rule for target.
-testMatch: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testMatch
-.PHONY : testMatch
+poseFromLoad: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 poseFromLoad
+.PHONY : poseFromLoad
 
 # fast build rule for target.
-testMatch/fast:
-	$(MAKE) -f src/CMakeFiles/testMatch.dir/build.make src/CMakeFiles/testMatch.dir/build
-.PHONY : testMatch/fast
+poseFromLoad/fast:
+	$(MAKE) -f src/CMakeFiles/poseFromLoad.dir/build.make src/CMakeFiles/poseFromLoad.dir/build
+.PHONY : poseFromLoad/fast
 
 #=============================================================================
-# Target rules for targets named poseFromPC
+# Target rules for targets named slambase
 
 # Build rule for target.
-poseFromPC: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 poseFromPC
-.PHONY : poseFromPC
+slambase: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 slambase
+.PHONY : slambase
 
 # fast build rule for target.
-poseFromPC/fast:
-	$(MAKE) -f src/CMakeFiles/poseFromPC.dir/build.make src/CMakeFiles/poseFromPC.dir/build
-.PHONY : poseFromPC/fast
+slambase/fast:
+	$(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
+.PHONY : slambase/fast
 
 # Help Target
 help:
@@ -183,11 +170,10 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... slambase"
-	@echo "... sift"
-	@echo "... PC_from_Traj"
-	@echo "... testMatch"
 	@echo "... poseFromPC"
+	@echo "... PC_from_Traj"
+	@echo "... poseFromLoad"
+	@echo "... slambase"
 .PHONY : help
 
 

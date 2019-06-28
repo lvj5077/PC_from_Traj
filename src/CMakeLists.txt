@@ -12,6 +12,18 @@ find_package( OpenCV 3.4 REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 link_directories(${OpenCV_LIB_DIR})
 
+SET( Ceres_DIR  "/usr/local/Cellar/ceres-solver/1.14.0_5/lib/cmake/Ceres")
+find_package( Ceres REQUIRED )
+MESSAGE( STATUS "CERES_INCLUDE_DIRS: " ${CERES_INCLUDE_DIRS} ) # include eigen3 as well
+MESSAGE( STATUS "CERES_LIBRARIES: " ${CERES_LIBRARIES} )
+include_directories( 
+    ${CERES_INCLUDE_DIRS} 
+)
+
+SET(CSparse_include_DIR "/usr/local/Cellar/suite-sparse/5.3.0_1/include/")
+SET(CSparse_LIB "/usr/local/Cellar/suite-sparse/5.3.0_1/lib/")
+include_directories( ${CSparse_include_DIR} )
+link_directories( ${CSparse_LIB} )
 
 
 ADD_LIBRARY( slambase slamBase.cpp )
@@ -33,15 +45,25 @@ TARGET_LINK_LIBRARIES( poseFromPC
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES} )
 
-ADD_EXECUTABLE( testMatch testMatch.cpp)
-TARGET_LINK_LIBRARIES( testMatch
+
+ADD_EXECUTABLE( poseFromLoad poseFromLoad.cpp)
+TARGET_LINK_LIBRARIES( poseFromLoad
     slambase
     ${OpenCV_LIBS} 
-    ${PCL_LIBRARIES} )
+    ${PCL_LIBRARIES} 
+    ${CSPARSE_LIBRARY}
+    ${CERES_LIBRARIES} 
+    )
+    
+# ADD_EXECUTABLE( testMatch testMatch.cpp)
+# TARGET_LINK_LIBRARIES( testMatch
+#     slambase
+#     ${OpenCV_LIBS} 
+#     ${PCL_LIBRARIES} )
 
 
-ADD_EXECUTABLE( sift sift.cpp)
-TARGET_LINK_LIBRARIES( sift
-    slambase
-    ${OpenCV_LIBS} 
-    ${PCL_LIBRARIES} )
+# ADD_EXECUTABLE( sift sift.cpp)
+# TARGET_LINK_LIBRARIES( sift
+#     slambase
+#     ${OpenCV_LIBS} 
+#     ${PCL_LIBRARIES} )

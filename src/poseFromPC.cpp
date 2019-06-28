@@ -140,7 +140,7 @@ int main(int argc, char** argv)
 
     cout<<endl<<"Program Started!"<<endl;
     cout <<"~~~~~~~~~~~~~~~~~~"<<endl<<endl;
-    string ParameterPath = "/Users/lingqiujin/work/PC_from_Traj/parameters.txt";
+    string ParameterPath = "/Users/jin/work/PC_from_Traj/parameters.txt";
     if(argc >=2){
     	// ParameterPath = argv[1];
         useFast= true;
@@ -559,16 +559,16 @@ int main(int argc, char** argv)
 
         }
     }
-    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/denseMap.pcd", *output);
+    pcl::io::savePCDFile("/Users/jin/work/PC_from_Traj/denseMap.pcd", *output);
 
 
     PointCloud::Ptr pts_objAllpcl = cvPtsToRGBPC(pts_objAll,0,255,0);
-    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/sparse.pcd", *pts_objAllpcl);
+    pcl::io::savePCDFile("/Users/jin/work/PC_from_Traj/sparse.pcd", *pts_objAllpcl);
     
     // *pts_objAllpcl = *pts_objAllpcl+ *output;
-    // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/sparseInPC.pcd", *pts_objAllpcl);
+    // pcl::io::savePCDFile("/Users/jin/work/PC_from_Traj/sparseInPC.pcd", *pts_objAllpcl);
     ofstream outputXYZ;
-    outputXYZ.open ("/Users/lingqiujin/work/PC_from_Traj/pcXYZ.txt");
+    outputXYZ.open ("/Users/jin/work/PC_from_Traj/pcXYZ.txt");
     for (size_t i=0; i<pts_objAll.size(); i++)
     {
         outputXYZ << setprecision(12)<< pts_objAll[i].x << " "<< setprecision(12) << pts_objAll[i].y<<" "<< setprecision(12)<< pts_objAll[i].z<<"\n";
@@ -576,7 +576,7 @@ int main(int argc, char** argv)
     outputXYZ.close();
 
 
-    cv::FileStorage outDesp("/Users/lingqiujin/work/PC_from_Traj/desp.yml", cv::FileStorage::WRITE); // create FileStorage object
+    cv::FileStorage outDesp("/Users/jin/work/PC_from_Traj/desp.yml", cv::FileStorage::WRITE); // create FileStorage object
     outDesp << "descriptorsAll" << descriptorsAll; // command to save the data
     outDesp.release();
 
@@ -584,11 +584,11 @@ int main(int argc, char** argv)
 
     descriptorsAll.release();
     FileStorage inDesp;
-    inDesp.open("/Users/lingqiujin/work/PC_from_Traj/desp.yml", FileStorage::READ); 
+    inDesp.open("/Users/jin/work/PC_from_Traj/desp.yml", FileStorage::READ); 
     inDesp["descriptorsAll"]>> descriptorsAll; 
     inDesp.release();
 
-    ifstream inputXYZ("/Users/lingqiujin/work/PC_from_Traj/pcXYZ.txt");
+    ifstream inputXYZ("/Users/jin/work/PC_from_Traj/pcXYZ.txt");
 
     // cout << pts_objAll <<endl;
     // cout << "================================================" <<endl;
@@ -615,17 +615,17 @@ int main(int argc, char** argv)
 
     
 
-    Mat rgb = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/color/1311.png");
-    Mat depth = cv::imread( "/Users/lingqiujin/Data/06_14_startPoint/depth/1311.png", -1);
+    Mat rgb = cv::imread( "/Users/jin/Data/06_14_startPoint/color/1311.png");
+    Mat depth = cv::imread( "/Users/jin/Data/06_14_startPoint/depth/1311.png", -1);
 
 
 
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/230.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/230.png", -1);
+    // Mat rgb = cv::imread( "/Users/jin/Data/testStart/02/color/230.png");
+    // Mat depth = cv::imread( "/Users/jin/Data/testStart/02/depth/230.png", -1);
 
 
-    // Mat rgb = cv::imread( "/Users/lingqiujin/Data/testStart/02/color/115.png");
-    // Mat depth = cv::imread( "/Users/lingqiujin/Data/testStart/02/depth/115.png", -1);
+    // Mat rgb = cv::imread( "/Users/jin/Data/testStart/02/color/115.png");
+    // Mat depth = cv::imread( "/Users/jin/Data/testStart/02/depth/115.png", -1);
     // camera.fx = 530.562866;
     // camera.fy = 530.562927;
 
@@ -703,7 +703,7 @@ int main(int argc, char** argv)
 
     // PointCloud::Ptr pts_objPC = cvPtsToRGBPC(pts_obj,255,0,0);
     // *pts_objPC = *pts_objPC + *output;
-    // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/pts_obj.pcd", *pts_objPC);
+    // pcl::io::savePCDFile("/Users/jin/work/PC_from_Traj/pts_obj.pcd", *pts_objPC);
 
 
     cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 5.0, 0.95, inliers );
@@ -744,12 +744,12 @@ int main(int argc, char** argv)
     // pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.inverse().matrix() );
     pcl::transformPointCloud( *cloud2, *cloud2, T_eigen.matrix() );
     *output += *cloud2;
-    pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/check.pcd", *output);
+    pcl::io::savePCDFile("/Users/jin/work/PC_from_Traj/check.pcd", *output);
 
     // PointCloud::Ptr ptsTrackPC = cvPtsToRGBPC(pts_Tracked,0,0,255);
     // *ptsTrackPC = *ptsTrackPC + *output;
     // *ptsTrackPC = *ptsTrackPC + *pts_objAllpcl;
-    // pcl::io::savePCDFile("/Users/lingqiujin/work/PC_from_Traj/tracked.pcd", *ptsTrackPC);
+    // pcl::io::savePCDFile("/Users/jin/work/PC_from_Traj/tracked.pcd", *ptsTrackPC);
 
     return 0;
 }

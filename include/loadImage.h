@@ -13,7 +13,7 @@ public:
         ifstream fin( filename.c_str() );
         if (!fin)
         {
-            cerr<<"parameter file does not exist."<<endl;
+            // cout<<"parameter file does not exist."<<endl;
             return;
         }
         while(!fin.eof())
@@ -41,7 +41,7 @@ public:
         map<string, string>::iterator iter = data.find(key);
         if (iter == data.end())
         {
-            cerr<<"Parameter name "<<key<<" not found!"<<endl;
+            // cout<<"Parameter name "<<key<<" not found!"<<endl;
             return string("NOT_FOUND");
         }
         return iter->second;

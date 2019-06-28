@@ -29,6 +29,8 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../include"
+  "/usr/local/Cellar/ceres-solver/1.14.0_5/include"
+  "/usr/local/Cellar/suite-sparse/5.3.0_1/include"
   "/usr/local/opt/python/Frameworks/Python.framework"
   "/usr/local/include/eigen3"
   "/usr/local/Cellar/vtk/8.2.0/include/vtk-8.2"
